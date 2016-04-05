@@ -77,6 +77,10 @@ angular.module('app.controllers', [])
 
   })
 
+  .controller('myJobsCtrl', function ($scope) {
+
+  })
+
   .controller('searchCtrl', function ($scope) {
 
   })
@@ -139,7 +143,12 @@ angular.module('app.controllers', [])
             if (response.data.isStudent) {
               $state.go("tabsController.home");
             } else {
-              $state.go("businessTabsController.home");
+              $ionicPopup.alert({
+                title: '',
+                template: "Sorry! You cannot login as a Business yet",
+                okText: 'OK'
+              });
+              //$state.go("businessTabsController.home");
             }
 
           });
@@ -207,5 +216,3 @@ angular.module('app.controllers', [])
   .controller('signupCtrl', function ($scope) {
 
   });
-
-

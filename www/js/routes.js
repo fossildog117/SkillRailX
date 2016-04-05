@@ -35,11 +35,11 @@ angular.module('app.routes', [])
         }
       })
 
-      .state('tabsController.search', {
-        url: '/searchStudent',
+      .state('tabsController.myJobs', {
+        url: '/myJobsStudent',
         views: {
           'tab3': {
-            templateUrl: 'templates/Student/search.html',
+            templateUrl: 'templates/Student/myJobs.html',
             controller: 'searchCtrl'
           }
         }
@@ -51,10 +51,20 @@ angular.module('app.routes', [])
         abstract: true
       })
 
+      .state('tabsController.search', {
+        url: '/searchStudent',
+        views: {
+          'tab2': {
+            templateUrl: 'templates/Student/search.html',
+            controller: 'searchCtrl'
+          }
+        }
+      })
+
       .state('tabsController.search2', {
         url: '/searchPage',
         views: {
-          'tab3': {
+          'tab2': {
             templateUrl: 'templates/Student/search2.html',
             controller: 'search2Ctrl'
           }
