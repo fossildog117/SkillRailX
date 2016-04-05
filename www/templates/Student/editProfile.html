@@ -1,0 +1,25 @@
+<ion-view title="Edit Profile" ng-controller="editProfileCtrl">
+  <ion-content overflow-scroll="true" padding="true" class="has-header">
+    <label class="item item-input item-stacked-label">
+      <span class="input-label">First Name</span>
+      <input id="businessName" type="text" value={{this.user["firstName"]}} ng-model="user.firstName">
+    </label>
+    <label class="item item-input item-stacked-label">
+      <span class="input-label">Last Name</span>
+      <input type="text" value={{this.user["lastName"]}} ng-model="user.lastName">
+    </label>
+    <label class="item item-input item-stacked-label">
+      <span class="input-label">Institution</span>
+      <input type="text" value={{this.user.currentUniversity}} ng-model="user.currentUniversity">
+    </label>
+    <label class="item item-input item-stacked-label">
+      <span class="input-label">Course</span>
+      <input type="text" value={{this.user.currentCourse}} ng-model="user.currentCourse">
+    </label>
+    <label class="item item-input item-stacked-label">
+      <span class="input-label">About me</span>
+      <input type="text" value={{this.user["aboutMe"]}} ng-model="user.aboutMe">
+    </label>
+    <button class="button button-balanced button-block" ng-click="saveProfileSettings()">Save</button>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,22 @@
+<ion-view title="Profile" id="page2" ng-controller="profileCtrl">
+  <ion-content overflow-scroll="true" padding="true" class="has-header">
+    <div ng-controller="profileCtrl">
+      <img src={{this.data.pictureUrl}} alt="No picture available" style="width: 304px;height: 304px;">
+      <p>First name: {{this.data["firstName"]}}</p>
+      <p>Last name: {{this.data["lastName"]}}</p>
+      <p>About me: {{this.data["aboutMe"]}}</p>
+      <p>Institution: {{this.data.currentUniversity}}</p>
+      <p>Course: {{this.data.currentCourse}}</p>
+      <p>Average rating: {{this.data["averageRating"]}}</p>
+      <p>Completed project: {{this.data["completedProjects"]}}</p>
+      <ui class="list">
+        <!--interests-->
+      </ui>
+      <ui class="list">
+        <!--skills-->
+      </ui>
+      <button ui-sref="tabsController.editProfile" class="button button-balanced button-block" ng-click="editProfile()">Edit profile</button>
+      <a ui-sref="login" id="log-out-button" class="button button-assertive  button-block">Log out</a>
+    </div>
+  </ion-content>
+</ion-view>
