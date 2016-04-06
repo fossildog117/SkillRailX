@@ -20,6 +20,13 @@
       <span class="input-label">About me</span>
       <input type="text" value={{this.user["aboutMe"]}} ng-model="user.aboutMe">
     </label>
+    <div class="spacer calm" style="height: 10px;"></div>
+    <ion-item class="item-divider">Interests </ion-item>
+     <div class="list">
+       <ion-checkbox ng-repeat="item in interests"
+                     ng-model="item.checked" ng-true-value="true" ng-false-value="false">
+                     {{ item.title }} 
+       </ion-checkbox>
     <button class="button button-balanced button-block" ng-click="saveProfileSettings()">Save</button>
   </ion-content>
 </ion-view>

@@ -23,6 +23,33 @@
   used under CC BY http://creativecommons.org/licenses/by/4.0/
   Modified icons to fit ionicon’s grid from original.
 */
+/*******************************************Self ADDED CSS********************************************/
+
+#interest-profile ul
+{
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+}
+
+#interest-profile ul li
+{
+    list-style-type: none;
+    display: inline;
+}
+
+#interest-profile li:before {
+content: " | ";
+}
+
+#interest-profile li:first-child:before {
+content: none;
+}
+
+
+
+
+/*******************************************IONIC********************************************/
 @font-face {
   font-family: "Ionicons";
   src: url("../fonts/ionicons.eot?v=2.0.1");

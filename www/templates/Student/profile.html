@@ -12,6 +12,12 @@
     <p>About me: {{this.data["aboutMe"]}}</p>
     <p>Institution: {{this.data.currentUniversity}}</p>
     <p>Course: {{this.data.currentCourse}}</p>
+    <div id="interest-profile">
+      <p>Interest:
+    <ul>
+        <li ng-repeat="interest in interests">{{this.interest.title}}</li>
+    </ul>
+    </div>
     <p>
       <a class="subdued"> Average rating: {{this.data["averageRating"]}} </a>
     </p>
@@ -27,9 +33,12 @@
       <p>Course: {{this.data.currentCourse}}</p>
       <p>Average rating: {{this.data["averageRating"]}}</p>
       <p>Completed project: {{this.data["completedProjects"]}}</p>
-      <ui class="list">
-        <!--interests-->
-      </ui>
+      <div id="interest-profile">
+        <p>Interest:
+      <ul>
+          <li ng-repeat="interest in interests">{{this.interest.title}}</li>
+      </ul>
+      </div>
       <ui class="list">
         <!--skills-->
       </ui>

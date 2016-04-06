@@ -94,6 +94,28 @@ angular.module('app.services', ['ngResource'])
         Token = value;
       }
     };
+  })
+
+
+  // .factory('CategoriesGET', function ($http) {
+  //   return {
+  //     getCategories: function() {
+  //       return $http({
+  //         method: 'GET',
+  //         url: url + '/api/Categories',
+  //         headers: {
+  //           'Authorization': 'Bearer ' + token
+  //         }
+  //       });
+  //     }
+  //   }
+  // })
+
+  .factory('CategoriesGET', function ($resource) {
+    return $resource(url + '/api/Categories');
   });
+
+
+
 
   var url = 'http://api.skillrail.com';

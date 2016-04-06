@@ -10,24 +10,22 @@ angular.module('app.controllers', [])
         console.log(response.data);
         ProfileSettings.setProfileDetails(response.data);
         $scope.data = response.data;
+        $scope.interests = $scope.data.interests;
+        console.log($scope.interests);
       }, function (value) {
         console.log(value);
       });
     };
 
     $scope.editProfile = function () {
-
-      // Configure additional set up if needed
-
       console.log("hello");
-
     };
 
     $scope.initProfileCtrl();
 
   })
 
-  .controller('editProfileCtrl', function ($scope, ProfileSettings, Token, EditProfile) {
+  .controller('editProfileCtrl', function ($scope, ProfileSettings, Token, EditProfile, CategoriesGET) {
 
     $scope.initEditProfileCtrl = function () {
       $scope.user = ProfileSettings.getProfileDetails();
@@ -35,7 +33,47 @@ angular.module('app.controllers', [])
 
     $scope.initEditProfileCtrl();
 
+    interestStatusChecker = function (title) {
+      for(var itemNum = 0; itemNum < $scope.user.interests.length; itemNum++){
+        if ($scope.user.interests[itemNum].title == title) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    $scope.categories = CategoriesGET.query();
+
+    $scope.interests = [
+      { title: "Content Creation", group: "Copywriting", id: 1 , checked: interestStatusChecker("Content Creation") },
+      { title: "Proofreading", group: "Copywriting", id: 2 , checked: interestStatusChecker("Proofreading") },
+      { title: "Video Editing", group: "Media", id: 3 , checked: interestStatusChecker("Video Editing") },
+      { title: "Graphic Design", group: "Design", id: 4 , checked: interestStatusChecker("Graphic Design") },
+      { title: "Translation", group: "Copywriting", id: 5 , checked: interestStatusChecker("Translation") },
+      { title: "Videography", group: "Media", id: 6 , checked: interestStatusChecker("Videography")},
+      { title: "Web Analytics", group: "Techies", id: 6 , checked: interestStatusChecker("Web Analytics") },
+      { title: "Social Media Marketing", group: "Techies", id: 7 , checked: interestStatusChecker("Social Media Marketing") },
+      { title: "SEO", group: "Techies", id: 8 , checked: interestStatusChecker("SEO") }
+    ];
+
     $scope.saveProfileSettings = function () {
+
+      /************Interest Edit******************/
+      $scope.newInterests = [];
+      var counter = 0;
+      for(var itemNum = 0; itemNum < $scope.interests.length; itemNum++){
+          if ($scope.interests[itemNum].checked){
+            $scope.newInterests[counter] = {
+                                "title": $scope.interests[itemNum].title,
+                                "group": $scope.interests[itemNum].group,
+                                "description": "TBC",
+                                "id": $scope.interests[itemNum].id,
+                              },
+            counter++;
+          }
+      }
+
+      /************Interest Edit******************/
 
       var newSettings = {
         "firstName": $scope.user.firstName,
@@ -50,7 +88,7 @@ angular.module('app.controllers', [])
         "isStudent": true,
         "studentEmail": "sample@sample.com",
         "companyName": null,
-        "interests": [],
+        "interests": $scope.newInterests,
         "skills": null,
         "ongoingProjects": 0,
         "completeProjects": 0,
@@ -62,10 +100,12 @@ angular.module('app.controllers', [])
         "id": 0
       };
 
-      console.log(newSettings);
+      // console.log(newSettings);
 
       EditProfile.makeRequest(newSettings, Token.getProperty()).then( function (response) {
+        console.log(newSettings);
         console.log(response);
+        /************Refresh Profile page******************/
       }, function (response) {
         console.log(response)
       });
@@ -74,15 +114,14 @@ angular.module('app.controllers', [])
   })
 
   .controller('homeCtrl', function ($scope) {
-
   })
 
   .controller('myJobsCtrl', function ($scope) {
 
   })
 
-  .controller('searchCtrl', function ($scope) {
-
+  .controller('searchCtrl', function ($scope, CategoriesGET, Token) {
+    $scope.jobs = CategoriesGET.query();
   })
 
   .controller('search2Ctrl', function ($scope) {
