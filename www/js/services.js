@@ -1,9 +1,19 @@
 angular.module('app.services', ['ngResource'])
 
-  .factory('Post', function ($resource) {
+  .factory('Post', function ($http, $httpParamSerializerJQLike) {
     // POSTs login details and returns object containing either
-    // a token or an error message
-    return $resource('https://data.skillrail.com/Token');
+    return {
+      attemptLogin: function (user) {
+        return $http({
+          method: 'POST',
+          url: url + '/Token',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: $httpParamSerializerJQLike(user)
+        });
+      }
+    }
   })
 
   .factory('SuggestedJobsServ', function ($resource) {
@@ -17,7 +27,7 @@ angular.module('app.services', ['ngResource'])
       getProfile: function(token) {
         return $http({
           method: 'GET',
-          url: 'https://data.skillrail.com/api/MyProfile',
+          url: url + '/api/MyProfile',
           headers: {
             'Authorization': 'Bearer ' + token
           }
@@ -31,13 +41,27 @@ angular.module('app.services', ['ngResource'])
       makeRequest: function (newSettings, Token) {
         return $http({
           method: 'PUT',
-          url: 'https://data.skillrail.com/api/MyProfile',
+          url: url + '/api/MyProfile',
           data: newSettings,
           headers: {
             'Authorization': 'Bearer ' + Token,
             'Content-Type': 'application/json'
           }
         });
+      }
+    }
+  })
+
+  .service('PublicProjects', function ($http) {
+    return {
+      getPublicProjects: function (Token) {
+        return $http({
+          method: 'GET',
+          url: url + '/api/PublicProject',
+          headers: {
+            'Authorization': 'Bearer ' + Token.getProperty()
+          }
+        })
       }
     }
   })
@@ -71,3 +95,5 @@ angular.module('app.services', ['ngResource'])
       }
     };
   });
+
+  var url = 'http://api.skillrail.com';
