@@ -122,95 +122,41 @@ angular.module('app.controllers', [])
     $scope.postData = {};
 
     $scope.login = function () {
+
       var user = {
-        grant_type: "password",
+        grant_type: 'password',
         username: $scope.postData.username,
         password: $scope.postData.password
       };
 
-      login(user).then(function (value) {
-
-        var token = value.data["access_token"];
-
+      Post.attemptLogin(user).then(function (value) {
         if (value.status == 200) {
-
+          var token = value.data['access_token'];
           Token.setProperty(token);
 
           GetProfile.getProfile(Token.getProperty()).then(function (response) {
-
-            console.log(response);
 
             if (response.data.isStudent) {
               $state.go("tabsController.home");
             } else {
               $ionicPopup.alert({
                 title: '',
-                template: "Sorry! You cannot login as a Business yet",
+                template: "You need a student account to login",
                 okText: 'OK'
               });
-              //$state.go("businessTabsController.home");
             }
-
           });
         }
-      }, function (value) {
+        console.log(value);
+      }, function (error) {
         $ionicPopup.alert({
           title: '',
-          template: value.data["error_description"],
+          template: "Invalid email or password",
           okText: 'OK'
         });
+        console.log(error);
       });
     };
-
-    function login(user) {
-      return $http({
-        method: 'POST',
-        url: 'https://data.skillrail.com/Token',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-        },
-        transformRequest: function (data) {
-          return angular.isObject(data) && String(data) !== '[object File]' ? serialiseAsParams(data) : data;
-        },
-        data: user
-      });
-    }
-
-    function serialiseAsParams(obj) {
-      var query = '',
-        name, value, fullSubName, subName, subValue, innerObj, i;
-
-      for (name in obj) {
-        if (!obj.hasOwnProperty(name)) {
-          continue;
-        }
-        value = obj[name];
-
-        if (value instanceof Array) {
-          for (i = 0; i < value.length; ++i) {
-            subValue = value[i];
-            fullSubName = name + '[' + i + ']';
-            innerObj = {};
-            innerObj[fullSubName] = subValue;
-            query += serialiseAsParams(innerObj) + '&';
-          }
-        } else if (value instanceof Object) {
-          for (subName in value) {
-            if (!value.hasOwnProperty(subName)) {
-              continue;
-            }
-            subValue = value[subName];
-            fullSubName = name + '[' + subName + ']';
-            innerObj = {};
-            innerObj[fullSubName] = subValue;
-            query += serialiseAsParams(innerObj) + '&';
-          }
-        } else if (value !== undefined && value !== null) {
-          query += encodeURIComponent(name) + '=' + encodeURIComponent(value) + '&';
-        }
-      }
-      return query.length ? query.substr(0, query.length - 1) : query;
-    }
   })
 
   .controller('signupCtrl', function ($scope) {
