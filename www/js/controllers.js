@@ -117,7 +117,7 @@ angular.module('app.controllers', [])
   // **                                                      **
   // **********************************************************
 
-  .controller('loginCtrl', function ($scope, Post, $http, $state, $ionicPopup, Token, GetProfile) {
+    .controller('loginCtrl', function ($scope, Login) {
 
     $scope.postData = {};
 
@@ -129,36 +129,70 @@ angular.module('app.controllers', [])
         password: $scope.postData.password
       };
 
-      Post.attemptLogin(user).then(function (value) {
-        if (value.status == 200) {
-          var token = value.data['access_token'];
-          Token.setProperty(token);
+      Login.login(user);
 
-          GetProfile.getProfile(Token.getProperty()).then(function (response) {
-
-            if (response.data.isStudent) {
-              $state.go("tabsController.home");
-            } else {
-              $ionicPopup.alert({
-                title: '',
-                template: "You need a student account to login",
-                okText: 'OK'
-              });
-            }
-          });
-        }
-        console.log(value);
-      }, function (error) {
-        $ionicPopup.alert({
-          title: '',
-          template: "Invalid email or password",
-          okText: 'OK'
-        });
-        console.log(error);
-      });
     };
   })
 
-  .controller('signupCtrl', function ($scope) {
+  .controller('signupCtrl', function ($scope, $exceptionHandler, $ionicPopup, SignUp, Login) {
+
+    $scope.initSignupCtrl = function () {
+      console.log("hello");
+    };
+
+    $scope.signup = function () {
+
+      try {
+
+        if ($scope.postData.password != null && $scope.postData.confirmPassword != null && $scope.postData.email != null && $scope.postData.firstName != null && $scope.postData.lastName != null && $scope.postData.phoneNumber != null) {
+          if ($scope.postData.password == $scope.postData.confirmPassword) {
+            var newUser = { "username": $scope.postData.email, "password": $scope.postData.password, "firstName": $scope.postData.firstName, "lastName": $scope.postData.lastName, "phoneNumber": $scope.postData.phoneNumber, "isStudent": true, "studentEmail": $scope.postData.email, "companyName": ""};
+
+            var user = {
+              grant_type: 'password',
+              username: newUser.username,
+              password: newUser.password
+            };
+
+            SignUp.attemptToRegister(newUser).then( function () {
+
+              Login.login(user);
+
+            }, function (error) {
+
+              // Handle error
+
+              if (error.statusText == "Internal Server Error") {
+                // Log in the user
+                Login.login(user);
+              } else {
+                // Popup showing error message
+                $scope.error($scope.postData.email + ' has already been taken :(');
+              }
+
+            })
+
+          } else {
+            $scope.error("Passwords do not match");
+          }
+        } else {
+          $scope.error("Please fill in all fields");
+        }
+      } catch (TypeError) {
+        $scope.error("Please fill in all fields");
+        $exceptionHandler(TypeError);
+      }
+    };
+
+    $scope.error = function (errorMessage) {
+      $ionicPopup.alert({
+        title: '',
+        template: errorMessage,
+        okText: 'OK'
+      });
+    };
+
+
+    $scope.initSignupCtrl();
 
   });
