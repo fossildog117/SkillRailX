@@ -120,11 +120,16 @@ angular.module('app.controllers', [])
 
   })
 
-  .controller('searchCtrl', function ($scope, CategoriesGET, Token) {
-    $scope.jobs = CategoriesGET.query();
+  .controller('searchCtrl', function ($scope, CategoriesGET, categoryID) {
+    $scope.categories = CategoriesGET.query();
+    $scope.openCategory = function(catId) {
+      categoryID.setProperty(catId);
+    }
   })
 
-  .controller('search2Ctrl', function ($scope) {
+  .controller('search2Ctrl', function ($scope, categoryGET, categoryID) {
+
+    $scope.category = categoryGET.getCategory(categoryID.getProperty());
 
   })
 

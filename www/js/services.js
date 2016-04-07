@@ -142,6 +142,18 @@ angular.module('app.services', ['ngResource'])
     };
   })
 
+  .service('categoryID', function () {
+    // Stores Token
+    var ID = 0;
+    return {
+      getProperty: function () {
+        return ID;
+      },
+      setProperty: function (value) {
+        ID = value;
+      }
+    };
+  })
 
   // .factory('CategoriesGET', function ($http) {
   //   return {
@@ -159,7 +171,16 @@ angular.module('app.services', ['ngResource'])
 
   .factory('CategoriesGET', function ($resource) {
     return $resource(url + '/api/Categories');
+  })
+
+  .factory('categoryGET', function ($resource) {
+    return {
+      getCategory: function (id) {
+        $resource(url + '/api/Categories/'+id );
+      }
+    }
   });
+
 
 
 
