@@ -34,6 +34,26 @@ angular.module('app.routes', [])
           }
         }
       })
+      
+      .state('tabsController.publicJobs', {
+        url: '/publicJobs',
+        views: {
+          'tab2': {
+            templateUrl: 'templates/Student/publicJobs.html',
+            controller: 'publicJobsCtrl'
+          }
+        }
+      })
+      
+      .state('tabsController.createBid', {
+        url: '/createBid',
+        views: {
+          'tab2': {
+            templateUrl: 'templates/Student/createBid.html',
+            controller: 'createBidCtrl'
+          }
+        }
+      })
 
       .state('tabsController.myJobs', {
         url: '/myJobsStudent',
