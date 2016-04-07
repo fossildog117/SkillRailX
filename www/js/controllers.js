@@ -113,7 +113,26 @@ angular.module('app.controllers', [])
 
   })
 
-  .controller('homeCtrl', function ($scope) {
+   .controller('homeCtrl', function ($scope, PublicProjects) {
+
+    $scope.initHome = function () {
+      PublicProjects.getPublicProjects().then(function (value) {
+
+        $scope.items = value.data.items;
+
+        console.log(value.data.items);
+      }, function (error) {
+        console.log(error);
+      })
+    };
+
+    $scope.jobSelected = function (item) {
+      console.log("user clicked button");
+      console.log(item)
+    };
+
+    $scope.initHome();
+
   })
 
   .controller('myJobsCtrl', function ($scope) {
