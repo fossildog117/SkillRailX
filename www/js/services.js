@@ -110,7 +110,6 @@ angular.module('app.services', ['ngResource'])
 
   .service('ProfileSettings', function() {
     // Stores the GET request from MyProfile
-
     var profileDetails = {};
 
     return {
@@ -122,7 +121,7 @@ angular.module('app.services', ['ngResource'])
       }
     }
   })
-  
+
   .service('JobManager', function () {
 
     var tempJob = {};
@@ -170,6 +169,18 @@ angular.module('app.services', ['ngResource'])
       },
       setProperty: function (value) {
         ID = value;
+      }
+    };
+  })
+
+  .service('interestsServ', function () {
+    var interests = {};
+    return {
+      getProperty: function () {
+        return interests;
+      },
+      setProperty: function (value) {
+        interests = value;
       }
     };
   })

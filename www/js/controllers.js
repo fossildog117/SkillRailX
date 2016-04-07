@@ -1,71 +1,69 @@
-angular.module('app.controllers', [])
+angular.module('app.controllers', ['ngRoute'])
 
   // nathan.liu.15@ucl.ac.uk
 
-  .controller('profileCtrl', function ($scope, GetProfile, Token, ProfileSettings) {
+  .controller('profileCtrl', function ($route, $scope, $rootScope, GetProfile, Token, ProfileSettings, interestsServ) {
 
     $scope.initProfileCtrl = function () {
       console.log("hello");
-      GetProfile.getProfile(Token.getProperty()).then(function (response) {
+      $route.reload();
+        GetProfile.getProfile(Token.getProperty()).then(function (response) {
         console.log(response.data);
         ProfileSettings.setProfileDetails(response.data);
-        $scope.data = response.data;
-        $scope.interests = $scope.data.interests;
-        console.log($scope.interests);
-      }, function (value) {
-        console.log(value);
-      });
-    };
+        $scope.user = ProfileSettings.getProfileDetails();
+        interestsServ.setProperty(response.data["interests"]);
+        $scope.interests = interestsServ.getProperty();
+        // $scope.data = response.data;
+        }, function (value) {
+          console.log(value);
+        });
 
-    $scope.editProfile = function () {
-      console.log("hello");
-    };
+        };
 
     $scope.initProfileCtrl();
+    $route.reload();
 
-  })
+   })
 
-  .controller('editProfileCtrl', function ($scope, $ionicPopup, ProfileSettings, Token, EditProfile, CategoriesGET) {
+  .controller('editProfileCtrl', function ($route, $scope, $ionicPopup, ProfileSettings, Token, EditProfile, CategoriesGET, interestsServ) {
 
     $scope.initEditProfileCtrl = function () {
+
       $scope.user = ProfileSettings.getProfileDetails();
+
+      interestStatusChecker = function (title) {
+        for (var itemNum = 0; itemNum < $scope.user.interests.length ; itemNum++) {
+          if ($scope.user.interests[itemNum].title == title) {
+            return true;
+          }
+        }
+        return false;
+      };
+
+      $scope.interests = [
+        {title: "Content Creation", group: "Copywriting", id: 1, checked: interestStatusChecker("Content Creation")},
+        {title: "Proofreading", group: "Copywriting", id: 2, checked: interestStatusChecker("Proofreading")},
+        {title: "Video Editing", group: "Media", id: 3, checked: interestStatusChecker("Video Editing")},
+        {title: "Graphic Design", group: "Design", id: 4, checked: interestStatusChecker("Graphic Design")},
+        {title: "Translation", group: "Copywriting", id: 5, checked: interestStatusChecker("Translation")},
+        {title: "Videography", group: "Media", id: 6, checked: interestStatusChecker("Videography")},
+        {title: "Web Analytics", group: "Techies", id: 7, checked: interestStatusChecker("Web Analytics")},
+        {title: "Social Media Marketing",  group: "Techies", id: 8, checked: interestStatusChecker("Social Media Marketing")},
+        {title: "SEO", group: "Techies", id: 9, checked: interestStatusChecker("SEO")}
+      ];
+
     };
 
     $scope.initEditProfileCtrl();
 
-    interestStatusChecker = function (title) {
-      for (var itemNum = 0; itemNum < $scope.user.interests.length; itemNum++) {
-        if ($scope.user.interests[itemNum].title == title) {
-          return true;
-        }
-      }
-      return false;
-    };
-
     $scope.categories = CategoriesGET.query();
-
-    $scope.interests = [
-      {title: "Content Creation", group: "Copywriting", id: 0, checked: interestStatusChecker("Content Creation")},
-      {title: "Proofreading", group: "Copywriting", id: 1, checked: interestStatusChecker("Proofreading")},
-      {title: "Video Editing", group: "Media", id: 2, checked: interestStatusChecker("Video Editing")},
-      {title: "Graphic Design", group: "Design", id: 3, checked: interestStatusChecker("Graphic Design")},
-      {title: "Translation", group: "Copywriting", id: 4, checked: interestStatusChecker("Translation")},
-      {title: "Videography", group: "Media", id: 5, checked: interestStatusChecker("Videography")},
-      {title: "Web Analytics", group: "Techies", id: 6, checked: interestStatusChecker("Web Analytics")},
-      {
-        title: "Social Media Marketing",
-        group: "Techies",
-        id: 7,
-        checked: interestStatusChecker("Social Media Marketing")
-      },
-      {title: "SEO", group: "Techies", id: 8, checked: interestStatusChecker("SEO")}
-    ];
 
     $scope.saveProfileSettings = function () {
 
       /************Interest Edit******************/
       $scope.newInterests = [];
       var counter = 0;
+      console.log($scope.interests.length);
       for (var itemNum = 0; itemNum < $scope.interests.length; itemNum++) {
         if ($scope.interests[itemNum].checked) {
           $scope.newInterests[counter] = {
@@ -77,8 +75,6 @@ angular.module('app.controllers', [])
           counter++;
         }
       }
-
-      /************Interest Edit******************/
 
       var newSettings = {
         "firstName": $scope.user.firstName,
@@ -106,17 +102,26 @@ angular.module('app.controllers', [])
       };
 
       EditProfile.makeRequest(newSettings, Token.getProperty()).then(function (response) {
-        ProfileSettings.setProfileDetails(response.data);
-
+        interestsServ.setProperty($scope.newInterests);
+        ProfileSettings.setProfileDetails(newSettings);
+        interestsServ.setProperty($scope.newInterests);
+        console.log(interestsServ.getProperty());
+        console.log("good");
+        $route.reload();
         $ionicPopup.alert({
           title: '',
           template: 'Your settings have been successfully saved',
           okText: 'OK'
         });
-
-        /************Refresh Profile page******************/
       }, function (response) {
-        console.log(response)
+        //because the server is not working for now sometimes
+        ProfileSettings.setProfileDetails(newSettings);
+        console.log("error");
+        $ionicPopup.alert({
+          title: '',
+          template: 'Your settings have been successfully saved',
+          okText: 'OK'
+        });
       });
     }
 

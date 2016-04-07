@@ -34,7 +34,7 @@ angular.module('app.routes', [])
           }
         }
       })
-      
+
       .state('tabsController.publicJobs', {
         url: '/publicJobs',
         views: {
@@ -44,7 +44,7 @@ angular.module('app.routes', [])
           }
         }
       })
-      
+
       .state('tabsController.createBid', {
         url: '/createBid',
         views: {
@@ -91,14 +91,14 @@ angular.module('app.routes', [])
         }
       })
 
-      .state('tabsController.editProfile', {
+      .state('editProfile', {
         url: '/editProfile',
-        views: {
-          'tab1': {
+        // views: {
+        //   'tab1': {
             templateUrl: 'templates/Student/editProfile.html',
             controller: 'editProfileCtrl'
-          }
-        }
+        //   }
+        // }
       })
 
       // **********************************************************
