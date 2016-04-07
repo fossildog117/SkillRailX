@@ -51,9 +51,9 @@ angular.module('app.controllers', [])
       { title: "Graphic Design", group: "Design", id: 4 , checked: interestStatusChecker("Graphic Design") },
       { title: "Translation", group: "Copywriting", id: 5 , checked: interestStatusChecker("Translation") },
       { title: "Videography", group: "Media", id: 6 , checked: interestStatusChecker("Videography")},
-      { title: "Web Analytics", group: "Techies", id: 6 , checked: interestStatusChecker("Web Analytics") },
-      { title: "Social Media Marketing", group: "Techies", id: 7 , checked: interestStatusChecker("Social Media Marketing") },
-      { title: "SEO", group: "Techies", id: 8 , checked: interestStatusChecker("SEO") }
+      { title: "Web Analytics", group: "Techies", id: 7 , checked: interestStatusChecker("Web Analytics") },
+      { title: "Social Media Marketing", group: "Techies", id: 8 , checked: interestStatusChecker("Social Media Marketing") },
+      { title: "SEO", group: "Techies", id: 9 , checked: interestStatusChecker("SEO") }
     ];
 
     $scope.saveProfileSettings = function () {
@@ -143,13 +143,19 @@ angular.module('app.controllers', [])
     $scope.categories = CategoriesGET.query();
     $scope.openCategory = function(catId) {
       categoryID.setProperty(catId);
+      console.log(catId);
     }
   })
 
-  .controller('search2Ctrl', function ($scope, categoryGET, categoryID) {
-
-    $scope.category = categoryGET.getCategory(categoryID.getProperty());
-
+  .controller('search2Ctrl', function ($scope, categoryID) {
+    var checker = function (object) {
+      if (object == 0) {
+        return {title: "Results"};
+      } else {
+        return object;
+      }
+    }
+      $scope.category = checker(categoryID.getProperty());
   })
 
   // **********************************************************

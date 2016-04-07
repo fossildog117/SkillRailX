@@ -61,7 +61,7 @@ angular.module('app.services', ['ngResource'])
       }
     }
   })
-  
+
   .factory('GetProfile', function ($http) {
     // Gets the profile details via HTTP request
 
@@ -93,7 +93,7 @@ angular.module('app.services', ['ngResource'])
       }
     }
   })
-  
+
   .service('PublicProjects', function ($http, Token) {
     return {
       getPublicProjects: function () {
@@ -139,7 +139,6 @@ angular.module('app.services', ['ngResource'])
   })
 
   .service('categoryID', function () {
-    // Stores Token
     var ID = 0;
     return {
       getProperty: function () {
@@ -151,6 +150,7 @@ angular.module('app.services', ['ngResource'])
     };
   })
 
+  /*********************** MAYBE NEEDED IF BEARER TOKEN NEEDED *************************/
   // .factory('CategoriesGET', function ($http) {
   //   return {
   //     getCategories: function() {
@@ -167,14 +167,6 @@ angular.module('app.services', ['ngResource'])
 
   .factory('CategoriesGET', function ($resource) {
     return $resource(url + '/api/Categories');
-  })
-
-  .factory('categoryGET', function ($resource) {
-    return {
-      getCategory: function (id) {
-        $resource(url + '/api/Categories/'+id );
-      }
-    }
   });
 
 
