@@ -24,8 +24,8 @@ angular.module('app.controllers', [])
     $scope.initProfileCtrl();
 
   })
-
-  .controller('editProfileCtrl', function ($scope, ProfileSettings, Token, EditProfile, CategoriesGET) {
+  
+  .controller('editProfileCtrl', function ($scope, $ionicPopup, ProfileSettings, Token, EditProfile, CategoriesGET) {
 
     $scope.initEditProfileCtrl = function () {
       $scope.user = ProfileSettings.getProfileDetails();
@@ -34,26 +34,26 @@ angular.module('app.controllers', [])
     $scope.initEditProfileCtrl();
 
     interestStatusChecker = function (title) {
-      for(var itemNum = 0; itemNum < $scope.user.interests.length; itemNum++){
+      for (var itemNum = 0; itemNum < $scope.user.interests.length; itemNum++) {
         if ($scope.user.interests[itemNum].title == title) {
           return true;
         }
       }
       return false;
-    }
+    };
 
     $scope.categories = CategoriesGET.query();
 
     $scope.interests = [
-      { title: "Content Creation", group: "Copywriting", id: 1 , checked: interestStatusChecker("Content Creation") },
-      { title: "Proofreading", group: "Copywriting", id: 2 , checked: interestStatusChecker("Proofreading") },
-      { title: "Video Editing", group: "Media", id: 3 , checked: interestStatusChecker("Video Editing") },
-      { title: "Graphic Design", group: "Design", id: 4 , checked: interestStatusChecker("Graphic Design") },
-      { title: "Translation", group: "Copywriting", id: 5 , checked: interestStatusChecker("Translation") },
-      { title: "Videography", group: "Media", id: 6 , checked: interestStatusChecker("Videography")},
-      { title: "Web Analytics", group: "Techies", id: 7 , checked: interestStatusChecker("Web Analytics") },
-      { title: "Social Media Marketing", group: "Techies", id: 8 , checked: interestStatusChecker("Social Media Marketing") },
-      { title: "SEO", group: "Techies", id: 9 , checked: interestStatusChecker("SEO") }
+      {title: "Content Creation", group: "Copywriting", id: 0, checked: interestStatusChecker("Content Creation")},
+      {title: "Proofreading", group: "Copywriting", id: 1, checked: interestStatusChecker("Proofreading")},
+      {title: "Video Editing", group: "Media", id: 2, checked: interestStatusChecker("Video Editing")},
+      {title: "Graphic Design", group: "Design", id: 3, checked: interestStatusChecker("Graphic Design")},
+      {title: "Translation", group: "Copywriting", id: 4, checked: interestStatusChecker("Translation")},
+      {title: "Videography", group: "Media", id: 5, checked: interestStatusChecker("Videography")},
+      {title: "Web Analytics", group: "Techies", id: 6, checked: interestStatusChecker("Web Analytics")},
+      {title: "Social Media Marketing", group: "Techies", id: 7, checked: interestStatusChecker("Social Media Marketing")},
+      {title: "SEO", group: "Techies", id: 8, checked: interestStatusChecker("SEO")}
     ];
 
     $scope.saveProfileSettings = function () {
@@ -61,16 +61,16 @@ angular.module('app.controllers', [])
       /************Interest Edit******************/
       $scope.newInterests = [];
       var counter = 0;
-      for(var itemNum = 0; itemNum < $scope.interests.length; itemNum++){
-          if ($scope.interests[itemNum].checked){
-            $scope.newInterests[counter] = {
-                                "title": $scope.interests[itemNum].title,
-                                "group": $scope.interests[itemNum].group,
-                                "description": "TBC",
-                                "id": $scope.interests[itemNum].id,
-                              },
-            counter++;
-          }
+      for (var itemNum = 0; itemNum < $scope.interests.length; itemNum++) {
+        if ($scope.interests[itemNum].checked) {
+          $scope.newInterests[counter] = {
+            "title": $scope.interests[itemNum].title,
+            "group": $scope.interests[itemNum].group,
+            "description": "TBC",
+            "id": $scope.interests[itemNum].id
+          };
+          counter++;
+        }
       }
 
       /************Interest Edit******************/
@@ -100,18 +100,20 @@ angular.module('app.controllers', [])
         "id": 0
       };
 
-      // console.log(newSettings);
+      EditProfile.makeRequest(newSettings, Token.getProperty()).then(function (response) {
+        ProfileSettings.setProfileDetails(response.data);
 
-      EditProfile.makeRequest(newSettings, Token.getProperty()).then( function (response) {
-        console.log(newSettings);
-        console.log(response);
+        $ionicPopup.alert({
+          title: '',
+          template: 'Your settings have been successfully saved',
+          okText: 'OK'
+        });
+
         /************Refresh Profile page******************/
       }, function (response) {
         console.log(response)
       });
     };
-
-  })
 
   .controller('homeCtrl', function ($scope, PublicProjects, $state, JobManager) {
 
