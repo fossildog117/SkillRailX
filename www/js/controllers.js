@@ -25,11 +25,11 @@ angular.module('app.controllers', ['ngRoute'])
 
    })
 
-  .controller('editProfileCtrl', function ($route, $scope, $ionicPopup, ProfileSettings, Token, EditProfile, CategoriesGET, interestsServ) {
+  .controller('editProfileCtrl', function ($route, $scope, $ionicPopup, ProfileManager, Token, CategoriesGET, interestsServ) {
 
     $scope.initEditProfileCtrl = function () {
 
-      $scope.user = ProfileSettings.getProfileDetails();
+      $scope.user = ProfileManager.getProfileDetails();
 
       interestStatusChecker = function (title) {
         for (var itemNum = 0; itemNum < $scope.user.interests.length ; itemNum++) {
@@ -106,25 +106,17 @@ angular.module('app.controllers', ['ngRoute'])
         ProfileSettings.setProfileDetails(newSettings);
         interestsServ.setProperty($scope.newInterests);
         console.log(interestsServ.getProperty());
-        console.log("good");
+
+        ProfileManager.editProfile(newSettings, Token.getProperty()).then(function (response) {
+        ProfileManager.setProfileDetails(response.data);
         $route.reload();
-        $ionicPopup.alert({
-          title: '',
-          template: 'Your settings have been successfully saved',
-          okText: 'OK'
-        });
+        PopUpManager('Your settings have been successfully saved');
+        /************Refresh Profile page******************/
       }, function (response) {
-        //because the server is not working for now sometimes
-        ProfileSettings.setProfileDetails(newSettings);
-        console.log("error");
-        $ionicPopup.alert({
-          title: '',
-          template: 'Your settings have been successfully saved',
-          okText: 'OK'
-        });
+        ProfileManager.setProfileDetails(newSettings);
+        console.log(response)
       });
     }
-
   })
 
   .controller('homeCtrl', function ($scope, PublicProjects, $state, JobManager) {
@@ -166,9 +158,22 @@ angular.module('app.controllers', ['ngRoute'])
 
   })
 
-  .controller('createBidCtrl', function ($scope, JobManager) {
+  .controller('createBidCtrl', function ($scope, JobManager, BidManager) {
 
     // currently configuring bids
+    $scope.postBid = function () {
+      console.log(this.newBid);
+      var user = JobManager.getTempJob();
+      var bid = {
+        // Configure Bid
+      };
+      BidManager.setBid(bid);
+      BidManager.postBid().then( function (value) {
+        // Configure if POST is successful
+      }, function (error) {
+        // Handle error
+      });
+    }
 
   })
 
@@ -236,13 +241,13 @@ angular.module('app.controllers', ['ngRoute'])
     };
   })
 
-  .controller('signupCtrl', function ($scope, $exceptionHandler, $ionicPopup, SignUp, Login) {
+  .controller('signupCtrl', function ($scope, $exceptionHandler, PopUpManager, SignUp, Login) {
 
     $scope.initSignupCtrl = function () {
       console.log("hello");
     };
 
-    $scope.signup = function () {
+    $scope.signup = function () {2
 
       try {
 
@@ -278,31 +283,22 @@ angular.module('app.controllers', ['ngRoute'])
                 Login.login(user);
               } else {
                 // Popup showing error message
-                $scope.error($scope.postData.email + ' has already been taken :(');
+                PopUpManager.alert($scope.postData.email + ' has already been taken :(');
               }
 
             })
 
           } else {
-            $scope.error("Passwords do not match");
+            PopUpManager.alert("Passwords do not match");
           }
         } else {
-          $scope.error("Please fill in all fields");
+          PopUpManager.alert("Please fill in all fields");
         }
       } catch (TypeError) {
-        $scope.error("Please fill in all fields");
+        PopUpManager.alert("Please fill in all fields");
         $exceptionHandler(TypeError);
       }
     };
-
-    $scope.error = function (errorMessage) {
-      $ionicPopup.alert({
-        title: '',
-        template: errorMessage,
-        okText: 'OK'
-      });
-    };
-
 
     $scope.initSignupCtrl();
 
