@@ -61,11 +61,7 @@ angular.module('app.services', ['ngResource'])
       }
     }
   })
-
-  .factory('SuggestedJobsServ', function ($resource) {
-    return $resource('https://data.skillrail.com/Products');
-  })
-
+  
   .factory('GetProfile', function ($http) {
     // Gets the profile details via HTTP request
 
@@ -97,10 +93,10 @@ angular.module('app.services', ['ngResource'])
       }
     }
   })
-
-  .service('PublicProjects', function ($http) {
+  
+  .service('PublicProjects', function ($http, Token) {
     return {
-      getPublicProjects: function (Token) {
+      getPublicProjects: function () {
         return $http({
           method: 'GET',
           url: url + '/api/PublicProject',
