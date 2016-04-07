@@ -113,7 +113,7 @@ angular.module('app.controllers', [])
 
   })
 
-   .controller('homeCtrl', function ($scope, PublicProjects) {
+  .controller('homeCtrl', function ($scope, PublicProjects, $state, JobManager) {
 
     $scope.initHome = function () {
       PublicProjects.getPublicProjects().then(function (value) {
@@ -126,6 +126,15 @@ angular.module('app.controllers', [])
       })
     };
 
+    $scope.jobSelected = function (listing) {
+      JobManager.setTempJob(listing);
+      $state.go('tabsController.publicJobs');
+    };
+
+    $scope.initHome();
+
+  })
+
     $scope.jobSelected = function (item) {
       console.log("user clicked button");
       console.log(item)
@@ -135,7 +144,26 @@ angular.module('app.controllers', [])
 
   })
 
-  .controller('myJobsCtrl', function ($scope) {
+  .controller('myJobsCtrl', function ($scope, JobManager, $state) {
+
+    $scope.viewedListing = {};
+
+    $scope.initMyJobsCtrl = function () {
+      $scope.viewedListing = JobManager.getTempJob();
+      console.log($scope.viewedListing);
+    };
+
+    $scope.newBid = function () {
+      $state.go('tabsController.createBid');
+    };
+
+    $scope.initMyJobsCtrl();
+
+  })
+
+  .controller('createBidCtrl', function ($scope, JobManager) {
+
+    // currently configuring bids
 
   })
 
