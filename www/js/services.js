@@ -122,6 +122,30 @@ angular.module('app.services', ['ngResource'])
       }
     }
   })
+  
+  .service('JobManager', function () {
+
+    var tempJob = {};
+
+    return {
+      postBid: function (bid) {
+        return $http({
+          method: 'POST',
+          url: url + 'api/Bid',
+          headers: {
+            'Authorization' : 'application/json'
+          },
+          data: bid
+        })
+      },
+      getTempJob: function () {
+        return tempJob;
+      },
+      setTempJob: function (jobListing) {
+        tempJob = jobListing;
+      }
+    }
+  })
 
   .service('Token', function () {
     // Stores Token
@@ -149,21 +173,6 @@ angular.module('app.services', ['ngResource'])
       }
     };
   })
-
-  /*********************** MAYBE NEEDED IF BEARER TOKEN NEEDED *************************/
-  // .factory('CategoriesGET', function ($http) {
-  //   return {
-  //     getCategories: function() {
-  //       return $http({
-  //         method: 'GET',
-  //         url: url + '/api/Categories',
-  //         headers: {
-  //           'Authorization': 'Bearer ' + token
-  //         }
-  //       });
-  //     }
-  //   }
-  // })
 
   .factory('CategoriesGET', function ($resource) {
     return $resource(url + '/api/Categories');
