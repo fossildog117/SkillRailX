@@ -24,7 +24,7 @@ angular.module('app.controllers', [])
     $scope.initProfileCtrl();
 
   })
-  
+
   .controller('editProfileCtrl', function ($scope, $ionicPopup, ProfileSettings, Token, EditProfile, CategoriesGET) {
 
     $scope.initEditProfileCtrl = function () {
@@ -52,7 +52,12 @@ angular.module('app.controllers', [])
       {title: "Translation", group: "Copywriting", id: 4, checked: interestStatusChecker("Translation")},
       {title: "Videography", group: "Media", id: 5, checked: interestStatusChecker("Videography")},
       {title: "Web Analytics", group: "Techies", id: 6, checked: interestStatusChecker("Web Analytics")},
-      {title: "Social Media Marketing", group: "Techies", id: 7, checked: interestStatusChecker("Social Media Marketing")},
+      {
+        title: "Social Media Marketing",
+        group: "Techies",
+        id: 7,
+        checked: interestStatusChecker("Social Media Marketing")
+      },
       {title: "SEO", group: "Techies", id: 8, checked: interestStatusChecker("SEO")}
     ];
 
@@ -115,6 +120,8 @@ angular.module('app.controllers', [])
       });
     }
 
+  })
+
   .controller('homeCtrl', function ($scope, PublicProjects, $state, JobManager) {
 
     $scope.initHome = function () {
@@ -137,16 +144,7 @@ angular.module('app.controllers', [])
 
   })
 
-    $scope.jobSelected = function (item) {
-      console.log("user clicked button");
-      console.log(item)
-    };
-
-    $scope.initHome();
-
-  })
-
-  .controller('myJobsCtrl', function ($scope, JobManager, $state) {
+  .controller('publicJobsCtrl', function ($scope, JobManager, $state) {
 
     $scope.viewedListing = {};
 
@@ -171,7 +169,7 @@ angular.module('app.controllers', [])
 
   .controller('searchCtrl', function ($scope, CategoriesGET, categoryID) {
     $scope.categories = CategoriesGET.query();
-    $scope.openCategory = function(catId) {
+    $scope.openCategory = function (catId) {
       categoryID.setProperty(catId);
       console.log(catId);
     }
@@ -185,7 +183,7 @@ angular.module('app.controllers', [])
         return object;
       }
     }
-      $scope.category = checker(categoryID.getProperty());
+    $scope.category = checker(categoryID.getProperty());
   })
 
   // **********************************************************
@@ -216,7 +214,7 @@ angular.module('app.controllers', [])
   // **                                                      **
   // **********************************************************
 
-    .controller('loginCtrl', function ($scope, Login) {
+  .controller('loginCtrl', function ($scope, Login) {
 
     $scope.postData = {};
 
@@ -245,7 +243,16 @@ angular.module('app.controllers', [])
 
         if ($scope.postData.password != null && $scope.postData.confirmPassword != null && $scope.postData.email != null && $scope.postData.firstName != null && $scope.postData.lastName != null && $scope.postData.phoneNumber != null) {
           if ($scope.postData.password == $scope.postData.confirmPassword) {
-            var newUser = { "username": $scope.postData.email, "password": $scope.postData.password, "firstName": $scope.postData.firstName, "lastName": $scope.postData.lastName, "phoneNumber": $scope.postData.phoneNumber, "isStudent": true, "studentEmail": $scope.postData.email, "companyName": ""};
+            var newUser = {
+              "username": $scope.postData.email,
+              "password": $scope.postData.password,
+              "firstName": $scope.postData.firstName,
+              "lastName": $scope.postData.lastName,
+              "phoneNumber": $scope.postData.phoneNumber,
+              "isStudent": true,
+              "studentEmail": $scope.postData.email,
+              "companyName": ""
+            };
 
             var user = {
               grant_type: 'password',
@@ -253,7 +260,7 @@ angular.module('app.controllers', [])
               password: newUser.password
             };
 
-            SignUp.attemptToRegister(newUser).then( function () {
+            SignUp.attemptToRegister(newUser).then(function () {
 
               Login.login(user);
 
