@@ -113,7 +113,7 @@ angular.module('app.controllers', [])
       }, function (response) {
         console.log(response)
       });
-    };
+    }
 
   .controller('homeCtrl', function ($scope, PublicProjects, $state, JobManager) {
 
