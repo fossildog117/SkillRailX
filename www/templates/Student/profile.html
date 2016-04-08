@@ -1,32 +1,33 @@
-<ion-view title="Profile" id="page2" >
+<ion-view title="Profile" id="page2" ng-controller="profileCtrl">
   <ion-nav-buttons side="right">
     <a class="button button-icon icon" ui-sref="editProfile">Edit</a>
   </ion-nav-buttons>
   <ion-content overflow-scroll="true" padding="true" class="has-header">
     <div class="list card">
       <div class="item item-avatar">
-        <img src={{user.picture}} alt="No picture available" style="width: 50px;height: 50px;">
-        <h2>{{user.firstName}} {{user.lastName}}</h2>
+        <img src={{this.user.pictureUrl}} alt="No picture available" style="width: 50px;height: 50px;">
+        <h2>{{this.user.firstName}} {{this.user.lastName}}</h2>
         <p>Phone Number: TBD </p>
         <p>
-          <a class="subdued"> Average rating: {{user.averageRating}} out of 5 </a>
+          <a class="subdued"> Average rating: {{this.user.averageRating}} out of 5 </a>
         </p>
       </div>
       <div class="item item-body">
-        <p>Profile Summary: {{user.aboutMe}}</p>
-        <p>Short description: {{user.description}} </p>
-        <p>Skills: {{user.skills}} </p>
-        <p>Course: {{user.currentCourse}}</p>
-        <p>Institution: {{user.currentUniversity}}</p>
+        <p>Profile Summary: {{this.user.aboutMe}}</p>
+        <p>Short description: {{this.user.description}} </p>
+        <p>Skills: {{this.user.skills}} </p>
+        <p>Course: {{this.user.currentCourse}}</p>
+        <p>Institution: {{this.user.currentUniversity}}</p>
         <div id="interest-profile">
           <p>Interests:
           <ul>
-            <li ng-repeat="interest in interests"> {{interest.title}}</li>
+            <li ng-repeat="i in this.user.interests">{{this.user.interests[i.id].title}}</li>
           </ul>
         </div>
         </p>
       </div>
     </div>
+    <button class="button button-block button-balanced" ng-click="refresh()">Hello</button>
     <a ui-sref="login" id="log-out-button" class="button button-assertive  button-block">Log out</a>
   </ion-content>
 </ion-view>
