@@ -1,12 +1,11 @@
-angular.module('app.controllers', ['ngRoute'])
+angular.module('app.controllers', [])
 
   // nathan.liu.15@ucl.ac.uk
 
-  .controller('profileCtrl', function ($route, $scope, $rootScope, GetProfile, Token, ProfileSettings, interestsServ) {
+  .controller('profileCtrl', function ($scope, $rootScope, GetProfile, Token, ProfileSettings, interestsServ) {
 
     $scope.initProfileCtrl = function () {
       console.log("hello");
-      $route.reload();
         GetProfile.getProfile(Token.getProperty()).then(function (response) {
         console.log(response.data);
         ProfileSettings.setProfileDetails(response.data);
@@ -21,15 +20,14 @@ angular.module('app.controllers', ['ngRoute'])
         };
 
     $scope.initProfileCtrl();
-    $route.reload();
 
    })
 
-  .controller('editProfileCtrl', function ($route, $scope, $ionicPopup, ProfileSettings, Token, EditProfile, CategoriesGET, interestsServ) {
+  .controller('editProfileCtrl', function ($scope, $ionicPopup, ProfileSettings, Token, EditProfile, CategoriesGET, interestsServ) {
 
     $scope.initEditProfileCtrl = function () {
-
-      $scope.user = ProfileSettings.getProfileDetails();
+      $scope.t = ProfileSettings.getProfileDetails()
+      $scope.user = $scope.t;
 
       interestStatusChecker = function (title) {
         for (var itemNum = 0; itemNum < $scope.user.interests.length ; itemNum++) {
@@ -107,7 +105,6 @@ angular.module('app.controllers', ['ngRoute'])
         interestsServ.setProperty($scope.newInterests);
         console.log(interestsServ.getProperty());
         console.log("good");
-        $route.reload();
         $ionicPopup.alert({
           title: '',
           template: 'Your settings have been successfully saved',
