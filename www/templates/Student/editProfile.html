@@ -1,40 +1,41 @@
-<ion-view title="Edit Profile">
+<ion-view title="Edit Profile" ng-controller="editProfileCtrl">
   <ion-content overflow-scroll="true" padding="true" class="has-header">
     <label class="item item-input item-stacked-label">
-      <span class="input-label">Tagline: </span>
-      <input id="businessName" type="text" value={{this.user["firstName"]}} ng-model="user.firstName">
+      <span class="input-label">First name </span>
+      <input id="businessName" type="text" value={{this.temp["firstName"]}} ng-model="temp.firstName">
     </label>
     <label class="item item-input item-stacked-label">
-      <span class="input-label">Last Name</span>
-      <input type="text" value={{this.user["lastName"]}} ng-model="user.lastName">
+      <span class="input-label">Last name</span>
+      <input type="text" value={{this.temp["lastName"]}} ng-model="this.temp.lastName">
     </label>
     <label class="item item-input item-stacked-label">
       <span class="input-label">Institution</span>
-      <input type="text" value={{this.user.currentUniversity}} ng-model="user.currentUniversity">
+      <input type="text" value={{this.temp.currentUniversity}} ng-model="this.temp.currentUniversity">
     </label>
     <label class="item item-input item-stacked-label">
       <span class="input-label">Course</span>
-      <input type="text" value={{this.user.currentCourse}} ng-model="user.currentCourse">
+      <input type="text" value={{this.temp.currentCourse}} ng-model="this.temp.currentCourse">
     </label>
     <label class="item item-input item-stacked-label">
       <span class="input-label">About me</span>
-      <input type="text" value={{this.user["aboutMe"]}} ng-model="user.aboutMe">
+      <input type="text" value={{this.temp["aboutMe"]}} ng-model="this.temp.aboutMe">
     </label>
     <div class="spacer calm" style="height: 10px;"></div>
-    <ion-item class="item-divider">Interests </ion-item>
-     <div class="list">
-       <ion-checkbox ng-repeat="item in interests"
-                     ng-model="item.checked" ng-true-value="true" ng-false-value="false">
-                     {{ item.title }}
-       </ion-checkbox>
-     </div>
-     <div class="spacer calm" style="height: 40px;"></div>
+    <ion-item class="item-divider">Interests</ion-item>
+    <ion-list ng-model="list">
+      <div ng-repeat="item in interests">
+      <ion-checkbox ng-model="item.checked" ng-true-value="true" ng-false-value="false">
+        {{ item.title }}
+      </ion-checkbox>
+      </div>
+    </ion-list>
+    <div class="spacer calm" style="height: 40px;"></div>
+    <button class="button button-balanced button-block" ng-click="test()">Test</button>
     <!-- <button class="button button-balanced button-block" ng-click="saveProfileSettings()"> Save </button> -->
-  </ion-content>
-  <div class="bar bar-footer bar-calm">
-    <div class="button-bar">
-    <a class="button button-assertive" ui-sref="tabsController.profile">Cancel</a>
+    <a class="button button-assertive" ui-sref="tabsController.profile({user: {{this.newSet}} })">Cancel</a>
     <a class="button button-balanced" ng-click="saveProfileSettings()" ui-sref="tabsController.profile">Save</a>
-    </div>
-  </div>
+  </ion-content>
 </ion-view>
+
+<a ui-sref="home({veryLongParamHome:'Home--f8d218ae-d998-4aa4-94ee-f27144a21238'
+  })">home</a>
