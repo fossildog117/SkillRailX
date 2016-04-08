@@ -71,6 +71,7 @@ angular.module('app.services', ['ngResource'])
   .service('ProfileManager', function ($http) {
 
     var profileDetails = {};
+    var interests  = {};
 
     return {
 
@@ -102,11 +103,20 @@ angular.module('app.services', ['ngResource'])
 
       setProfileDetails: function (value) {
         profileDetails = value;
+      },
+
+      getInterests: function () {
+        return interests;
+      },
+
+      setInterests: function (value) {
+        interests = value;
       }
+
     }
   })
 
-  .service('BidManager', function () {
+  .service('BidManager', function ($http) {
 
     var bid = {};
 
@@ -194,24 +204,8 @@ angular.module('app.services', ['ngResource'])
     };
   })
 
-  .service('interestsServ', function () {
-    var interests = {};
-    return {
-      getProperty: function () {
-        return interests;
-      },
-      setProperty: function (value) {
-        interests = value;
-      }
-    };
-  })
-
   .factory('CategoriesGET', function ($resource) {
     return $resource(url + '/api/Categories');
   });
-
-
-
-
 
   var url = 'http://api.skillrail.com';
