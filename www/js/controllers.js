@@ -2,37 +2,38 @@ angular.module('app.controllers', ['ngRoute'])
 
   // nathan.liu.15@ucl.ac.uk
 
-  .controller('profileCtrl', function ($route, $scope, $rootScope, GetProfile, Token, ProfileSettings, interestsServ) {
+  .controller('profileCtrl', function ($scope, Token, ProfileManager, $state) {
 
     $scope.initProfileCtrl = function () {
-      console.log("hello");
-      $route.reload();
-        GetProfile.getProfile(Token.getProperty()).then(function (response) {
+      console.log("HELLO");
+      ProfileManager.loadProfile(Token.getProperty()).then(function (response) {
         console.log(response.data);
-        ProfileSettings.setProfileDetails(response.data);
-        $scope.user = ProfileSettings.getProfileDetails();
-        interestsServ.setProperty(response.data["interests"]);
-        $scope.interests = interestsServ.getProperty();
-        // $scope.data = response.data;
-        }, function (value) {
-          console.log(value);
-        });
+        $scope.user = response.data;
+        ProfileManager.setProfileDetails(response.data);
+      }, function (value) {
+        console.log(value);
+      });
 
-        };
+    };
+
+    $scope.refresh = function () {
+      $state.reload();
+    };
 
     $scope.initProfileCtrl();
-    $route.reload();
+    //$route.reload();
 
-   })
+  })
 
-  .controller('editProfileCtrl', function ($route, $scope, $ionicPopup, ProfileManager, Token, CategoriesGET, interestsServ) {
+  .controller('editProfileCtrl', function ($state, $route, $scope, PopUpManager, ProfileManager, Token, CategoriesGET) {
 
     $scope.initEditProfileCtrl = function () {
 
       $scope.user = ProfileManager.getProfileDetails();
+      $scope.temp = $scope.user;
 
       interestStatusChecker = function (title) {
-        for (var itemNum = 0; itemNum < $scope.user.interests.length ; itemNum++) {
+        for (var itemNum = 0; itemNum < $scope.user.interests.length; itemNum++) {
           if ($scope.user.interests[itemNum].title == title) {
             return true;
           }
@@ -48,15 +49,19 @@ angular.module('app.controllers', ['ngRoute'])
         {title: "Translation", group: "Copywriting", id: 5, checked: interestStatusChecker("Translation")},
         {title: "Videography", group: "Media", id: 6, checked: interestStatusChecker("Videography")},
         {title: "Web Analytics", group: "Techies", id: 7, checked: interestStatusChecker("Web Analytics")},
-        {title: "Social Media Marketing",  group: "Techies", id: 8, checked: interestStatusChecker("Social Media Marketing")},
+        {title: "Social Media Marketing", group: "Techies", id: 8, checked: interestStatusChecker("Social Media Marketing")},
         {title: "SEO", group: "Techies", id: 9, checked: interestStatusChecker("SEO")}
       ];
 
     };
 
-    $scope.initEditProfileCtrl();
-
     $scope.categories = CategoriesGET.query();
+
+    $scope.test = function () {
+
+      $state.go()
+
+    };
 
     $scope.saveProfileSettings = function () {
 
@@ -101,22 +106,26 @@ angular.module('app.controllers', ['ngRoute'])
         "id": 0
       };
 
-      EditProfile.makeRequest(newSettings, Token.getProperty()).then(function (response) {
-        interestsServ.setProperty($scope.newInterests);
-        ProfileSettings.setProfileDetails(newSettings);
-        interestsServ.setProperty($scope.newInterests);
-        console.log(interestsServ.getProperty());
-
-        ProfileManager.editProfile(newSettings, Token.getProperty()).then(function (response) {
+      ProfileManager.editProfile(newSettings, Token.getProperty()).then(function (response) {
+        console.log(response.data);
         ProfileManager.setProfileDetails(response.data);
+        ProfileManager.setInterests($scope.newInterests);
+
+        $scope.newSet = newSettings;
+
+        $state.go('tabsController.profile');
+        $state.reload();
         $route.reload();
-        PopUpManager('Your settings have been successfully saved');
+        PopUpManager.alert('Your settings have been successfully saved');
         /************Refresh Profile page******************/
       }, function (response) {
         ProfileManager.setProfileDetails(newSettings);
         console.log(response)
-      });
-    }
+      })
+    };
+
+    $scope.initEditProfileCtrl();
+
   })
 
   .controller('homeCtrl', function ($scope, PublicProjects, $state, JobManager) {
@@ -162,13 +171,12 @@ angular.module('app.controllers', ['ngRoute'])
 
     // currently configuring bids
     $scope.postBid = function () {
-      console.log(this.newBid);
       var user = JobManager.getTempJob();
       var bid = {
         // Configure Bid
       };
       BidManager.setBid(bid);
-      BidManager.postBid().then( function (value) {
+      BidManager.postBid().then(function (value) {
         // Configure if POST is successful
       }, function (error) {
         // Handle error
@@ -247,7 +255,8 @@ angular.module('app.controllers', ['ngRoute'])
       console.log("hello");
     };
 
-    $scope.signup = function () {2
+    $scope.signup = function () {
+      2
 
       try {
 
