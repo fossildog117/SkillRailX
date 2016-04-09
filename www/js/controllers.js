@@ -2,35 +2,42 @@ angular.module('app.controllers', [])
 
   // nathan.liu.15@ucl.ac.uk
 
-  .controller('profileCtrl', function ($scope, $rootScope, GetProfile, Token, ProfileSettings, interestsServ) {
+
+  .controller('profileCtrl', function ($scope, Token, ProfileManager, $state) {
 
     $scope.initProfileCtrl = function () {
-      console.log("hello");
-        GetProfile.getProfile(Token.getProperty()).then(function (response) {
+      console.log("HELLO");
+      ProfileManager.loadProfile(Token.getProperty()).then(function (response) {
         console.log(response.data);
-        ProfileSettings.setProfileDetails(response.data);
-        $scope.user = ProfileSettings.getProfileDetails();
-        interestsServ.setProperty(response.data["interests"]);
-        $scope.interests = interestsServ.getProperty();
-        // $scope.data = response.data;
-        }, function (value) {
-          console.log(value);
-        });
-
-        };
+        $scope.user = response.data;
+        ProfileManager.setProfileDetails(response.data);
+      }, function (value) {
+        console.log(value);
+      });
+    };
+    $scope.refresh = function () {
+      $state.reload();
+    };
 
     $scope.initProfileCtrl();
+  })
 
-   })
 
-  .controller('editProfileCtrl', function ($scope, $ionicPopup, ProfileSettings, Token, EditProfile, CategoriesGET, interestsServ) {
+
+
+
+
+
+
+  .controller('editProfileCtrl', function ($state, $scope, PopUpManager, ProfileManager, Token, CategoriesGET) {
 
     $scope.initEditProfileCtrl = function () {
-      $scope.t = ProfileSettings.getProfileDetails()
-      $scope.user = $scope.t;
+
+      $scope.user = ProfileManager.getProfileDetails();
+      $scope.temp = $scope.user;
 
       interestStatusChecker = function (title) {
-        for (var itemNum = 0; itemNum < $scope.user.interests.length ; itemNum++) {
+        for (var itemNum = 0; itemNum < $scope.user.interests.length; itemNum++) {
           if ($scope.user.interests[itemNum].title == title) {
             return true;
           }
@@ -46,15 +53,17 @@ angular.module('app.controllers', [])
         {title: "Translation", group: "Copywriting", id: 5, checked: interestStatusChecker("Translation")},
         {title: "Videography", group: "Media", id: 6, checked: interestStatusChecker("Videography")},
         {title: "Web Analytics", group: "Techies", id: 7, checked: interestStatusChecker("Web Analytics")},
-        {title: "Social Media Marketing",  group: "Techies", id: 8, checked: interestStatusChecker("Social Media Marketing")},
+        {title: "Social Media Marketing", group: "Techies", id: 8, checked: interestStatusChecker("Social Media Marketing")},
         {title: "SEO", group: "Techies", id: 9, checked: interestStatusChecker("SEO")}
       ];
 
     };
 
-    $scope.initEditProfileCtrl();
-
     $scope.categories = CategoriesGET.query();
+
+    $scope.test = function () {
+      $state.go()
+    };
 
     $scope.saveProfileSettings = function () {
 
@@ -99,38 +108,40 @@ angular.module('app.controllers', [])
         "id": 0
       };
 
-      EditProfile.makeRequest(newSettings, Token.getProperty()).then(function (response) {
-        interestsServ.setProperty($scope.newInterests);
-        ProfileSettings.setProfileDetails(newSettings);
-        interestsServ.setProperty($scope.newInterests);
-        console.log(interestsServ.getProperty());
-        console.log("good");
-        $ionicPopup.alert({
-          title: '',
-          template: 'Your settings have been successfully saved',
-          okText: 'OK'
-        });
+      ProfileManager.editProfile(newSettings, Token.getProperty()).then(function (response) {
+        console.log(response.data);
+        ProfileManager.setProfileDetails(response.data);
+        ProfileManager.setInterests($scope.newInterests);
+        $scope.newSet = newSettings;
+        $state.go('tabsController.profile');
+        $state.reload();
+        PopUpManager.alert('Your settings have been successfully saved');
+
       }, function (response) {
-        //because the server is not working for now sometimes
-        ProfileSettings.setProfileDetails(newSettings);
-        console.log("error");
-        $ionicPopup.alert({
-          title: '',
-          template: 'Your settings have been successfully saved',
-          okText: 'OK'
-        });
-      });
-    }
+        ProfileManager.setProfileDetails(newSettings);
+        console.log(response)
+      })
+    };
+
+    $scope.initEditProfileCtrl();
 
   })
+
+
+
+
+
+
+
+
+
+
 
   .controller('homeCtrl', function ($scope, PublicProjects, $state, JobManager) {
 
     $scope.initHome = function () {
       PublicProjects.getPublicProjects().then(function (value) {
-
         $scope.items = value.data.items;
-
         console.log(value.data.items);
       }, function (error) {
         console.log(error);
@@ -143,8 +154,15 @@ angular.module('app.controllers', [])
     };
 
     $scope.initHome();
-
   })
+
+
+
+
+
+
+
+
 
   .controller('publicJobsCtrl', function ($scope, JobManager, $state) {
 
@@ -163,29 +181,84 @@ angular.module('app.controllers', [])
 
   })
 
-  .controller('createBidCtrl', function ($scope, JobManager) {
+
+
+
+
+
+
+
+
+
+
+  .controller('createBidCtrl', function ($scope, JobManager, BidManager) {
 
     // currently configuring bids
-
-  })
-
-  .controller('searchCtrl', function ($scope, CategoriesGET, categoryID) {
-    $scope.categories = CategoriesGET.query();
-    $scope.openCategory = function (catId) {
-      categoryID.setProperty(catId);
-      console.log(catId);
+    $scope.postBid = function () {
+      var user = JobManager.getTempJob();
+      var bid = {
+        // Configure Bid
+      };
+      BidManager.setBid(bid);
+      BidManager.postBid().then(function (value) {
+        // Configure if POST is successful
+      }, function (error) {
+        // Handle error
+      });
     }
+
   })
 
-  .controller('search2Ctrl', function ($scope, categoryID) {
+
+
+
+
+  .controller('searchCtrl', function ($scope, CategoriesGET, SearchManager) {
+    $scope.categories = CategoriesGET.query();
+    $scope.searchResult = "";
+
+    $scope.openCategory = function (catId, value) {
+      SearchManager.setID(catId);
+      SearchManager.setSearchResult(value);
+      console.log(value);
+
+    }
+
+  })
+
+
+
+
+
+
+
+  .controller('search2Ctrl', function ($state, $scope, JobManager, SearchManager, PublicProjects) {
+
     var checker = function (object) {
       if (object == 0) {
         return {title: "Results"};
       } else {
         return object;
       }
-    }
-    $scope.category = checker(categoryID.getProperty());
+    };
+
+    $scope.category = checker(SearchManager.getID());
+
+    PublicProjects.getPublicProjects().then(function (value) {
+
+      $scope.items = value.data.items;
+      $scope.searchResult = SearchManager.getSearchResult();
+
+      console.log(value.data.items);
+      }, function (error) {
+      console.log(error);
+    })
+
+    $scope.jobSelected = function (listing) {
+      JobManager.setTempJob(listing);
+      $state.go('tabsController.publicJobs');
+    };
+
   })
 
   // **********************************************************
@@ -233,13 +306,14 @@ angular.module('app.controllers', [])
     };
   })
 
-  .controller('signupCtrl', function ($scope, $exceptionHandler, $ionicPopup, SignUp, Login) {
+  .controller('signupCtrl', function ($scope, $exceptionHandler, PopUpManager, SignUp, Login) {
 
     $scope.initSignupCtrl = function () {
       console.log("hello");
     };
 
     $scope.signup = function () {
+      2
 
       try {
 
@@ -275,31 +349,22 @@ angular.module('app.controllers', [])
                 Login.login(user);
               } else {
                 // Popup showing error message
-                $scope.error($scope.postData.email + ' has already been taken :(');
+                PopUpManager.alert($scope.postData.email + ' has already been taken :(');
               }
 
             })
 
           } else {
-            $scope.error("Passwords do not match");
+            PopUpManager.alert("Passwords do not match");
           }
         } else {
-          $scope.error("Please fill in all fields");
+          PopUpManager.alert("Please fill in all fields");
         }
       } catch (TypeError) {
-        $scope.error("Please fill in all fields");
+        PopUpManager.alert("Please fill in all fields");
         $exceptionHandler(TypeError);
       }
     };
-
-    $scope.error = function (errorMessage) {
-      $ionicPopup.alert({
-        title: '',
-        template: errorMessage,
-        okText: 'OK'
-      });
-    };
-
 
     $scope.initSignupCtrl();
 

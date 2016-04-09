@@ -1,6 +1,6 @@
 angular.module('app.services', ['ngResource'])
 
-  .service('Login', function ($http, $httpParamSerializerJQLike, $state, $ionicPopup, Token, GetProfile) {
+  .service('Login', function ($http, $httpParamSerializerJQLike, $state, PopUpManager, Token, ProfileManager) {
     // POSTs login details and returns object containing either
     return {
       login: function (user) {
@@ -11,25 +11,17 @@ angular.module('app.services', ['ngResource'])
             var token = value.data['access_token'];
             Token.setProperty(token);
 
-            GetProfile.getProfile(Token.getProperty()).then(function (response) {
+            ProfileManager.loadProfile(Token.getProperty()).then(function (response) {
 
               if (response.data.isStudent) {
                 $state.go("tabsController.home");
               } else {
-                $ionicPopup.alert({
-                  title: '',
-                  template: "You need a student account to login",
-                  okText: 'OK'
-                });
+                PopUpManager.alert("You need a student account to login");
               }
             });
           }
         }, function (error) {
-          $ionicPopup.alert({
-            title: '',
-            template: error.statusText,
-            okText: 'OK'
-          });
+          PopUpManager.alert(error.statusText);
           console.log(error);
         });
       },
@@ -62,38 +54,6 @@ angular.module('app.services', ['ngResource'])
     }
   })
 
-  .factory('GetProfile', function ($http) {
-    // Gets the profile details via HTTP request
-
-    return {
-      getProfile: function(token) {
-        return $http({
-          method: 'GET',
-          url: url + '/api/MyProfile',
-          headers: {
-            'Authorization': 'Bearer ' + token
-          }
-        });
-      }
-    }
-  })
-
-  .service('EditProfile', function ($http) {
-    return {
-      makeRequest: function (newSettings, Token) {
-        return $http({
-          method: 'PUT',
-          url: url + '/api/MyProfile',
-          data: newSettings,
-          headers: {
-            'Authorization': 'Bearer ' + Token,
-            'Content-Type': 'application/json'
-          }
-        });
-      }
-    }
-  })
-
   .service('PublicProjects', function ($http, Token) {
     return {
       getPublicProjects: function () {
@@ -108,18 +68,77 @@ angular.module('app.services', ['ngResource'])
     }
   })
 
-  .service('ProfileSettings', function() {
-    // Stores the GET request from MyProfile
+  .service('ProfileManager', function ($http) {
+
     var profileDetails = {};
+    var interests  = {};
 
     return {
+
+      loadProfile: function (token) {
+        return $http({
+          method: 'GET',
+          url: url + '/api/MyProfile',
+          headers: {
+            'Authorization': 'Bearer ' + token
+          }
+        });
+      },
+
+      editProfile: function (newSettings, Token) {
+        return $http({
+          method: 'PUT',
+          url: url + '/api/MyProfile',
+          data: newSettings,
+          headers: {
+            'Authorization': 'Bearer ' + Token,
+            'Content-Type': 'application/json'
+          }
+        });
+      },
+
       getProfileDetails: function () {
         return profileDetails;
       },
+
       setProfileDetails: function (value) {
         profileDetails = value;
+      },
+
+      getInterests: function () {
+        return interests;
+      },
+
+      setInterests: function (value) {
+        interests = value;
+      }
+
+    }
+  })
+
+  .service('BidManager', function ($http) {
+
+    var bid = {};
+
+    return {
+      postBid: function () {
+        return $http({
+          method: 'POST',
+          url: url + '/api/Bid',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          data: bid
+        })
+      },
+      setBid: function (newBid) {
+        bid = newBid;
+      },
+      getBid: function () {
+        return bid;
       }
     }
+
   })
 
   .service('JobManager', function () {
@@ -132,7 +151,7 @@ angular.module('app.services', ['ngResource'])
           method: 'POST',
           url: url + 'api/Bid',
           headers: {
-            'Authorization' : 'application/json'
+            'Authorization': 'application/json'
           },
           data: bid
         })
@@ -146,9 +165,20 @@ angular.module('app.services', ['ngResource'])
     }
   })
 
+  .service('PopUpManager', function ($ionicPopup) {
+    return {
+      alert: function (message) {
+        $ionicPopup.alert({
+          title: '',
+          template: message,
+          okText: 'OK'
+        });
+      }
+    }
+  })
+
   .service('Token', function () {
     // Stores Token
-
     var Token = 'Token';
 
     return {
@@ -161,26 +191,21 @@ angular.module('app.services', ['ngResource'])
     };
   })
 
-  .service('categoryID', function () {
+  .service('SearchManager', function () {
     var ID = 0;
+    var searchResult = "nothing";
     return {
-      getProperty: function () {
+      getID: function () {
         return ID;
       },
-      setProperty: function (value) {
+      setID: function (value) {
         ID = value;
-      }
-    };
-  })
-
-  .service('interestsServ', function () {
-    var interests = {};
-    return {
-      getProperty: function () {
-        return interests;
       },
-      setProperty: function (value) {
-        interests = value;
+      getSearchResult: function() {
+        return searchResult;
+      },
+      setSearchResult: function(value) {
+        searchResult = value;
       }
     };
   })
@@ -188,9 +213,5 @@ angular.module('app.services', ['ngResource'])
   .factory('CategoriesGET', function ($resource) {
     return $resource(url + '/api/Categories');
   });
-
-
-
-
 
   var url = 'http://api.skillrail.com';
