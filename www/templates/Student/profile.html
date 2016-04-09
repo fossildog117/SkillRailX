@@ -21,13 +21,13 @@
         <div id="interest-profile">
           <p>Interests:
           <ul>
-            <li ng-repeat="i in this.user.interests">{{this.user.interests[i.id].title}}</li>
+            <li ng-repeat="interest in this.user.interests"> {{interest.title}}</li>
           </ul>
+          </p>
         </div>
-        </p>
       </div>
     </div>
-    <button class="button button-block button-balanced" ng-click="refresh()">Hello</button>
+    <button class="button button-balanced button-block" ng-click="refresh()">Refresh</button>
     <a ui-sref="login" id="log-out-button" class="button button-assertive  button-block">Log out</a>
   </ion-content>
 </ion-view>

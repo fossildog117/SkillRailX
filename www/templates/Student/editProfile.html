@@ -1,5 +1,5 @@
-<ion-view title="Edit Profile" ng-controller="editProfileCtrl">
-  <ion-content overflow-scroll="true" padding="true" class="has-header">
+<ion-view title="Edit Profile" ng-controller="profileCtrl as parent" class="ng-scope">
+  <ion-content overflow-scroll="true" padding="true" class="has-header ng-scope" ng-controller="editProfileCtrl as child">
     <label class="item item-input item-stacked-label">
       <span class="input-label">First name </span>
       <input id="businessName" type="text" value={{this.temp["firstName"]}} ng-model="temp.firstName">
@@ -32,10 +32,7 @@
     <div class="spacer calm" style="height: 40px;"></div>
     <button class="button button-balanced button-block" ng-click="test()">Test</button>
     <!-- <button class="button button-balanced button-block" ng-click="saveProfileSettings()"> Save </button> -->
-    <a class="button button-assertive" ui-sref="tabsController.profile({user: {{this.newSet}} })">Cancel</a>
+    <a class="button button-assertive" ui-sref="tabsController.profile">Cancel</a>
     <a class="button button-balanced" ng-click="saveProfileSettings()" ui-sref="tabsController.profile">Save</a>
   </ion-content>
 </ion-view>
-
-<a ui-sref="home({veryLongParamHome:'Home--f8d218ae-d998-4aa4-94ee-f27144a21238'
-  })">home</a>

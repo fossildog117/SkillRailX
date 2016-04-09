@@ -2,30 +2,40 @@ angular.module('app.controllers', ['ngRoute'])
 
   // nathan.liu.15@ucl.ac.uk
 
-  .controller('profileCtrl', function ($scope, Token, ProfileManager, $state) {
+  .controller('profileCtrl', function ($scope, $rootScope, $route, $state, $timeout, Token, ProfileManager) {
+
+    $scope.user = {};
+
+    function setUser (input) {
+      $scope.user = input;
+    }
 
     $scope.initProfileCtrl = function () {
       console.log("HELLO");
       ProfileManager.loadProfile(Token.getProperty()).then(function (response) {
+
         console.log(response.data);
-        $scope.user = response.data;
+        setUser(response.data);
         ProfileManager.setProfileDetails(response.data);
+
       }, function (value) {
         console.log(value);
       });
-
     };
 
     $scope.refresh = function () {
-      $state.reload();
+      $scope.initProfileCtrl();
     };
 
+    $rootScope.$on('saveSuccess', function (event, data) {
+      setUser(data);
+    });
+
     $scope.initProfileCtrl();
-    //$route.reload();
 
   })
 
-  .controller('editProfileCtrl', function ($state, $route, $scope, PopUpManager, ProfileManager, Token, CategoriesGET) {
+  .controller('editProfileCtrl', function ($state, $route, $scope, $rootScope, PopUpManager, ProfileManager, Token, CategoriesGET) {
 
     $scope.initEditProfileCtrl = function () {
 
@@ -56,12 +66,6 @@ angular.module('app.controllers', ['ngRoute'])
     };
 
     $scope.categories = CategoriesGET.query();
-
-    $scope.test = function () {
-
-      $state.go()
-
-    };
 
     $scope.saveProfileSettings = function () {
 
@@ -111,11 +115,8 @@ angular.module('app.controllers', ['ngRoute'])
         ProfileManager.setProfileDetails(response.data);
         ProfileManager.setInterests($scope.newInterests);
 
-        $scope.newSet = newSettings;
+        $rootScope.$emit('saveSuccess', newSettings);
 
-        $state.go('tabsController.profile');
-        $state.reload();
-        $route.reload();
         PopUpManager.alert('Your settings have been successfully saved');
         /************Refresh Profile page******************/
       }, function (response) {
@@ -174,8 +175,15 @@ angular.module('app.controllers', ['ngRoute'])
       var user = JobManager.getTempJob();
       var bid = {
         // Configure Bid
+        'bid' : this.newBid,
+        'description' : this.newDescription
       };
+
+      console.log(bid);
+      console.log(BidManager.getBids());
+
       BidManager.setBid(bid);
+      BidManager.addBid(bid);
       BidManager.postBid().then(function (value) {
         // Configure if POST is successful
       }, function (error) {
@@ -185,12 +193,29 @@ angular.module('app.controllers', ['ngRoute'])
 
   })
 
-  .controller('searchCtrl', function ($scope, CategoriesGET, categoryID) {
-    $scope.categories = CategoriesGET.query();
-    $scope.openCategory = function (catId) {
-      categoryID.setProperty(catId);
-      console.log(catId);
-    }
+  .controller('searchCtrl', function ($scope, BidManager) {
+
+    $scope.bidsList = [];
+
+    $scope.initSearchCtrl = function () {
+      console.log("hello success");
+
+      if (BidManager.getBids().length == 0) {
+        $scope.bidsList = [{'description' : "You currently have no bids"}];
+      } else {
+        $scope.bidsList = BidManager.getBids();
+      }
+    };
+
+    $scope.userProposals = function (item) {
+
+      BidManager.setBid(item);
+      $state.go();
+
+    };
+
+    $scope.initSearchCtrl();
+
   })
 
   .controller('search2Ctrl', function ($scope, categoryID) {
@@ -200,7 +225,7 @@ angular.module('app.controllers', ['ngRoute'])
       } else {
         return object;
       }
-    }
+    };
     $scope.category = checker(categoryID.getProperty());
   })
 
@@ -256,7 +281,6 @@ angular.module('app.controllers', ['ngRoute'])
     };
 
     $scope.signup = function () {
-      2
 
       try {
 
@@ -294,9 +318,7 @@ angular.module('app.controllers', ['ngRoute'])
                 // Popup showing error message
                 PopUpManager.alert($scope.postData.email + ' has already been taken :(');
               }
-
             })
-
           } else {
             PopUpManager.alert("Passwords do not match");
           }
