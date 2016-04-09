@@ -15,6 +15,7 @@ angular.module('app.controllers', [])
         console.log(value);
       });
     };
+    
     $scope.refresh = function () {
       $state.reload();
     };
