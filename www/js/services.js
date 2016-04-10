@@ -112,12 +112,12 @@ angular.module('app.services', ['ngResource'])
       setInterests: function (value) {
         interests = value;
       }
-
     }
   })
 
   .service('BidManager', function ($http) {
 
+    var listOfBids = [];
     var bid = {};
 
     return {
@@ -136,9 +136,14 @@ angular.module('app.services', ['ngResource'])
       },
       getBid: function () {
         return bid;
+      },
+      getBids: function () {
+        return listOfBids;
+      },
+      addBid: function (bid) {
+        listOfBids.push(bid);
       }
     }
-
   })
 
   .service('JobManager', function () {

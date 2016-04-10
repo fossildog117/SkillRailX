@@ -23,13 +23,39 @@
   used under CC BY http://creativecommons.org/licenses/by/4.0/
   Modified icons to fit ionicon’s grid from original.
 */
+
+/*blue for tabs and shit: #3FC9D5
+
+blue for cards: #5D91BF // have to implement it
+
+grey/black: #444D58;
+font-family: "Open Sans",sans-serif;
+
+*/
+
+
+
+
 /*******************************************Self ADDED CSS********************************************/
+.background, .background .pane, .item-content {
+    /*background-color: #EFF3F8;*/
+    font-family: "Open Sans",sans-serif;
+}
+
+.ion-view {
+    font-family: "Open Sans",sans-serif;
+    font-size: 14px;
+}
+
+#interest-profile {
+  font-size: 14px;
+  color: #000000;
+}
 
 #interest-profile ul
 {
     margin: 0;
     padding: 0;
-    font-size: 12px;
 }
 
 #interest-profile ul li
@@ -45,9 +71,6 @@ content: " | ";
 #interest-profile li:first-child:before {
 content: none;
 }
-
-
-
 
 /*******************************************IONIC********************************************/
 @font-face {
@@ -3970,9 +3993,12 @@ a.subdued {
     .bar.bar-positive.bar-footer {
       background-image: linear-gradient(180deg, #0c60ee, #0c60ee 50%, transparent 50%); }
   .bar.bar-calm {
-    border-color: #0a9dc7;
-    background-color: #11c1f3;
-    background-image: linear-gradient(0deg, #0a9dc7, #0a9dc7 50%, transparent 50%);
+    /*border-color: #0a9dc7;
+    background-color: #11c1f3;*/
+    border-color: #000000;
+    font-family: "Open Sans",sans-serif;
+    background-color: #444D58;
+    background-image: linear-gradient(0deg, #000000, #000000 50%, transparent 50%);
     color: #fff; }
     .bar.bar-calm .title {
       color: #fff; }
@@ -4428,7 +4454,7 @@ a.subdued {
 .tabs-calm > .tabs,
 .tabs.tabs-calm {
   border-color: #0a9dc7;
-  background-color: #11c1f3;
+  background-color: #3FC9D5;
   background-image: linear-gradient(0deg, #0a9dc7, #0a9dc7 50%, transparent 50%);
   color: #fff; }
   .tabs-calm > .tabs .tab-item .badge,
@@ -6614,6 +6640,7 @@ button.item.item-button-right {
   overflow: hidden;
   margin: 20px 10px;
   border-radius: 2px;
+  font-family: "Open Sans",sans-serif;
   background-color: #fff; }
 
 .card {

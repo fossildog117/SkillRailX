@@ -1,36 +1,54 @@
-angular.module('app.controllers', [])
+angular.module('app.controllers', ['ngRoute'])
 
   // nathan.liu.15@ucl.ac.uk
 
+  .controller('profileCtrl', function ($ionicScrollDelegate, $ionicSlideBoxDelegate, $scope, $rootScope, $route, $state, $timeout, Token, ProfileManager) {
 
-  .controller('profileCtrl', function ($scope, Token, ProfileManager, $state) {
+    $scope.user = {};
+
+    function setUser (input) {
+      $scope.user = input;
+    }
 
     $scope.initProfileCtrl = function () {
       console.log("HELLO");
       ProfileManager.loadProfile(Token.getProperty()).then(function (response) {
+
         console.log(response.data);
-        $scope.user = response.data;
+        setUser(response.data);
         ProfileManager.setProfileDetails(response.data);
+
       }, function (value) {
         console.log(value);
       });
     };
-    
+
     $scope.refresh = function () {
-      $state.reload();
+      $scope.initProfileCtrl();
     };
 
+    $rootScope.$on('saveSuccess', function (event, data) {
+      setUser(data);
+    });
+
     $scope.initProfileCtrl();
+
+    //**********************************CSS*********************************//
+
+    $ionicSlideBoxDelegate.update();
+    $scope.onUserDetailContentScroll =  function onUserDetailContentScroll(){
+      var scrollDelegate = $ionicScrollDelegate.$getByHandle('userDetailContent');
+      var scrollView = scrollDelegate.getScrollView();
+      $scope.$broadcast('userDetailContent.scroll', scrollView);
+    }
+
   })
 
 
 
 
 
-
-
-
-  .controller('editProfileCtrl', function ($state, $scope, PopUpManager, ProfileManager, Token, CategoriesGET) {
+  .controller('editProfileCtrl', function ($state, $route, $scope, $rootScope, PopUpManager, ProfileManager, Token, CategoriesGET) {
 
     $scope.initEditProfileCtrl = function () {
 
@@ -61,10 +79,6 @@ angular.module('app.controllers', [])
     };
 
     $scope.categories = CategoriesGET.query();
-
-    $scope.test = function () {
-      $state.go()
-    };
 
     $scope.saveProfileSettings = function () {
 
@@ -110,24 +124,23 @@ angular.module('app.controllers', [])
       };
 
       ProfileManager.editProfile(newSettings, Token.getProperty()).then(function (response) {
-        console.log(response.data);
-        ProfileManager.setProfileDetails(response.data);
-        ProfileManager.setInterests($scope.newInterests);
-        $scope.newSet = newSettings;
-        $state.go('tabsController.profile');
-        $state.reload();
-        PopUpManager.alert('Your settings have been successfully saved');
+         console.log(response.data);
+         ProfileManager.setProfileDetails(response.data);
+         ProfileManager.setInterests($scope.newInterests);
 
-      }, function (response) {
-        ProfileManager.setProfileDetails(newSettings);
-        console.log(response)
-      })
-    };
+         $rootScope.$emit('saveSuccess', newSettings);
 
-    $scope.initEditProfileCtrl();
+         PopUpManager.alert('Your settings have been successfully saved');
 
-  })
+       }, function (response) {
+         ProfileManager.setProfileDetails(newSettings);
+         console.log(response)
+       })
+     };
 
+     $scope.initEditProfileCtrl();
+
+   })
 
 
 
@@ -199,8 +212,15 @@ angular.module('app.controllers', [])
       var user = JobManager.getTempJob();
       var bid = {
         // Configure Bid
+        'bid' : this.newBid,
+        'description' : this.newDescription
       };
+
+      console.log(bid);
+      console.log(BidManager.getBids());
+
       BidManager.setBid(bid);
+      BidManager.addBid(bid);
       BidManager.postBid().then(function (value) {
         // Configure if POST is successful
       }, function (error) {
@@ -214,16 +234,50 @@ angular.module('app.controllers', [])
 
 
 
-  .controller('searchCtrl', function ($scope, CategoriesGET, SearchManager) {
+
+  .controller('myJobsCtrl', function ($state, $scope, BidManager) {
+
+    $scope.bidsList = [];
+
+    $scope.initSearchCtrl = function () {
+      console.log("hello success");
+
+      if (BidManager.getBids().length == 0) {
+        $scope.bidsList = [{'description' : "You currently have no bids"}];
+      } else {
+        $scope.bidsList = BidManager.getBids();
+      }
+    };
+
+    $scope.userProposals = function (item) {
+
+      BidManager.setBid(item);
+      $state.go();
+
+    };
+
+    $scope.initSearchCtrl();
+  })
+
+
+
+
+
+
+
+  .controller('searchCtrl', function ($scope, $state, SearchManager, CategoriesGET) {
+
     $scope.categories = CategoriesGET.query();
     $scope.searchResult = "";
 
-    $scope.openCategory = function (catId, value) {
-      SearchManager.setID(catId);
-      SearchManager.setSearchResult(value);
-      console.log(value);
+    $scope.openCategory = function(categoryID, searchFor) {
+
+      SearchManager.setID(categoryID);
+      SearchManager.setSearchResult(searchFor);
+
 
     }
+
 
   })
 
@@ -314,7 +368,6 @@ angular.module('app.controllers', [])
     };
 
     $scope.signup = function () {
-      2
 
       try {
 
@@ -352,9 +405,7 @@ angular.module('app.controllers', [])
                 // Popup showing error message
                 PopUpManager.alert($scope.postData.email + ' has already been taken :(');
               }
-
             })
-
           } else {
             PopUpManager.alert("Passwords do not match");
           }

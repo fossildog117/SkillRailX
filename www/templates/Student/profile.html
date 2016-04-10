@@ -2,7 +2,51 @@
   <ion-nav-buttons side="right">
     <a class="button button-icon icon" ui-sref="editProfile">Edit</a>
   </ion-nav-buttons>
-  <ion-content overflow-scroll="true" padding="true" class="has-header">
+  <ion-content overflow-scroll='false' delegate-handle="userDetailContent" on-scroll="onUserDetailContentScroll()" header-shrink scroll-event-interval="5">
+      <div class="about-header">
+            <div class="profile-media">
+              <div class="profile-details">
+                <img  ng-src="{{this.user.pictureUrl}}" class="img-circle profile-image">
+                <h5 class="color-white">
+                  {{this.user.firstName}} {{this.user.lastName}}
+                </h5>
+                <p>
+                  Phone Number: TBD
+                </p>
+                <p>
+                  Average rating: {{this.user.averageRating}} out of 5
+                </p>
+              </div>
+              <img ng-src="lib/images/WDF_681446.jpg" class="about-image profile-background-image" style="vertical-align:middle;">
+            </div>
+    </div>
+    <p class="card padding">
+      Profile Summary: {{this.user.aboutMe}}
+    </p>
+    <p class="card padding">
+      Short description: {{this.user.description}}
+      </p>
+      <p class="card padding">
+      Skills: {{this.user.skills}}
+      </p>
+      <p class="card padding">
+      Course: {{this.user.currentCourse}}
+      </p>
+      <p class="card padding">
+      Institution: {{user.currentUniversity}}
+      </p>
+    <div class="list card">
+    <div class="item item-body">
+      <div id="interest-profile">
+        Interests:
+        <ul>
+          <li ng-repeat="interest in this.user.interests"> {{interest.title}}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  </ion-content>
+  <!-- <ion-content overflow-scroll="true" padding="true" class="has-header">
     <div class="list card">
       <div class="item item-avatar">
         <img src={{this.user.pictureUrl}} alt="No picture available" style="width: 50px;height: 50px;">
@@ -21,13 +65,13 @@
         <div id="interest-profile">
           <p>Interests:
           <ul>
-            <li ng-repeat="i in this.user.interests">{{this.user.interests[i.id].title}}</li>
+            <li ng-repeat="interest in this.user.interests"> {{interest.title}}</li>
           </ul>
+          </p>
         </div>
-        </p>
       </div>
     </div>
-    <button class="button button-block button-balanced" ng-click="refresh()">Hello</button>
+    <button class="button button-balanced button-block" ng-click="refresh()">Refresh</button>
     <a ui-sref="login" id="log-out-button" class="button button-assertive  button-block">Log out</a>
-  </ion-content>
+  </ion-content> -->
 </ion-view>
