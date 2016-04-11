@@ -20,30 +20,36 @@
               <img ng-src="lib/images/WDF_681446.jpg" class="about-image profile-background-image" style="vertical-align:middle;">
             </div>
     </div>
-    <p class="card padding">
-      Profile Summary: {{this.user.aboutMe}}
-    </p>
-    <p class="card padding">
-      Short description: {{this.user.description}}
-      </p>
-      <p class="card padding">
-      Skills: {{this.user.skills}}
-      </p>
-      <p class="card padding">
-      Course: {{this.user.currentCourse}}
-      </p>
-      <p class="card padding">
-      Institution: {{user.currentUniversity}}
-      </p>
-    <div class="list card">
-    <div class="item item-body">
-      <div id="interest-profile">
-        Interests:
-        <ul>
-          <li ng-repeat="interest in this.user.interests"> {{interest.title}}</li>
-        </ul>
+
+      <div class="card-profile padding-profile">
+      <h4 class="profile-title">Profile Summary </h4>
+      <div class="profile-text">{{this.user.aboutMe}}</div>
       </div>
-    </div>
-  </div>
+
+      <div class="card-profile padding-profile">
+      <h4 class="profile-title"> Short description </h4>
+      <div class="profile-text"> {{this.user.description}} </div>
+      </div>
+
+      <div class="card-profile padding-profile">
+      <h4 class="profile-title">Skill</h4>
+      <div class="profile-text">{{this.user.skills}}</div>
+      </div>
+
+      <div class="card-profile padding-profile">
+      <h4 class="profile-title">Course</h4>
+      <div class="profile-text">{{this.user.currentCourse}}</div>
+      </div>
+
+      <div class="card-profile padding-profile">
+      <h4 class="profile-title">Institution</h4>
+      <div class="profile-text">{{user.currentUniversity}}</div>
+      </div>
+
+      <div class="card-profile padding-profile">
+      <h4 class="profile-title">Interests</h4>
+      <div class="profile-text" ng-repeat="interest in this.user.interests"> {{interest.title}}</div>
+      </div>
+
   </ion-content>
 </ion-view>
