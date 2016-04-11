@@ -1,9 +1,11 @@
 angular.module('app.services', ['ngResource'])
 
-  .service('Login', function ($http, $httpParamSerializerJQLike, $state, PopUpManager, Token, ProfileManager) {
+  .service('Login', function ($http, $httpParamSerializerJQLike, $state, PopUpManager, Token, ProfileManager, Loading) {
     // POSTs login details and returns object containing either
     return {
       login: function (user) {
+        Loading.show();
+
         this.attemptLogin(user).then(function (value) {
 
           if (value.status == 200) {
@@ -23,6 +25,8 @@ angular.module('app.services', ['ngResource'])
         }, function (error) {
           PopUpManager.alert(error.statusText);
           console.log(error);
+        }).finally(function(){
+          Loading.hide();
         });
       },
 
@@ -215,8 +219,39 @@ angular.module('app.services', ['ngResource'])
     };
   })
 
-  .factory('CategoriesGET', function ($resource) {
-    return $resource(url + '/api/Categories');
+  // .factory('CategoriesGET', function ($resource, Loading) {
+  //   Loading.show();
+  //   return $resource(url + '/api/Categories').finally(function() {Loading.hide()});
+  // })
+
+  .service('CategoriesGET', function(Loading) {
+    return {
+      getCategories: function() {
+        Loading.show();
+        return $http({
+          method: 'GET',
+          url: url + 'api/Categories',
+          headers: {
+            'Authorization': 'application/json'
+          },
+        }).finally(function() {
+          Loading.hide();
+        });
+      }
+    }
+  })
+
+  .service('Loading', function($ionicLoading){
+    return {
+      show: function() {
+        $ionicLoading.show({
+          template: '<p>Loading...</p><ion-spinner></ion-spinner>'
+        });
+      },
+      hide: function() {
+        $ionicLoading.hide();
+      }
+    }
   });
 
   var url = 'http://api.skillrail.com';

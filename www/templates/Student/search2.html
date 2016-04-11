@@ -2,17 +2,17 @@
     <ion-content overflow-scroll="true" padding="true" class="has-header">
 
       <div class="list">
-        <a ng-repeat="item in items" class="item item-thumbnail-left" ng-click="jobSelected(item)">
+        <a ng-repeat="item in items | filter: { title: filterBySearchResult() } as results" class="item item-thumbnail-left" ng-click="jobSelected(item)">
           <img ng-src={{item.projectOwner['picture']}} alt="No picture">
           <h4>{{item.projectOwner.displayName}}</h4>
           <p>{{item.projectOwner.description}}</p>
         </a>
+        <p ng-if="results.length == 0"> NOTHING CORRESPONDS TO YOUR SEARCH! </p>
       </div>
 
-      <!-- <a ng-repeat="item in items | filter: {category : filterByCategory() } | filter { title: filter}" class="item item-thumbnail-left" ng-click="jobSelected(item)"> -->
-
-      <p> The filtered by this name for job title: {{searchResult}} </p>
-      <p> Filtered by this category for job category: {{category.title}} </p>
+      <!-- <a ng-repeat="item in items | filter: {category : filterByCategory() } | filter { title: searchResult }" class="item item-thumbnail-left" ng-click="jobSelected(item)"> -->
+      <!-- <p> The filtered by this name for job title: {{searchResult}} </p>
+      <p> Filtered by this category for job category: {{category.title}} </p> -->
 
     </ion-content>
 </ion-view>

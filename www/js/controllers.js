@@ -78,7 +78,7 @@ angular.module('app.controllers', ['ngRoute'])
 
     };
 
-    $scope.categories = CategoriesGET.query();
+    $scope.categories = CategoriesGET.getCategories;
 
     $scope.saveProfileSettings = function () {
 
@@ -277,17 +277,14 @@ angular.module('app.controllers', ['ngRoute'])
 
   .controller('searchCtrl', function ($scope, $state, SearchManager, CategoriesGET) {
 
-    $scope.categories = CategoriesGET.query();
+    $scope.categories = CategoriesGET.getCategories;
     $scope.searchResult = "";
 
     $scope.openCategory = function(categoryID, searchFor) {
 
       SearchManager.setID(categoryID);
       SearchManager.setSearchResult(searchFor);
-
-
     }
-
 
   })
 
@@ -313,6 +310,7 @@ angular.module('app.controllers', ['ngRoute'])
 
       $scope.items = value.data.items;
       $scope.searchResult = SearchManager.getSearchResult();
+      console.log($scope.searchResult);
 
       console.log(value.data.items);
       }, function (error) {
@@ -323,6 +321,22 @@ angular.module('app.controllers', ['ngRoute'])
       JobManager.setTempJob(listing);
       $state.go('tabsController.publicJobs');
     };
+
+    $scope.filterBySearchResult = function () {
+      return $scope.searchResult;
+    }
+
+    $scope.filterByCategory = function() {
+      if ($scope.category.title == "Results") {
+        return {
+                title: "",
+                group: "",
+                description: "",
+              };
+      } else {
+        return $scope.category;
+      }
+    }
 
   })
 
