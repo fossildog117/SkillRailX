@@ -224,7 +224,7 @@ angular.module('app.services', ['ngResource'])
   //   return $resource(url + '/api/Categories').finally(function() {Loading.hide()});
   // })
 
-  .service('CategoriesGET', function(Loading) {
+  .service('CategoriesGET', function(Loading, $http) {
     return {
       getCategories: function() {
         Loading.show();
@@ -234,9 +234,7 @@ angular.module('app.services', ['ngResource'])
           headers: {
             'Authorization': 'application/json'
           },
-        }).finally(function() {
-          Loading.hide();
-        });
+        })
       }
     }
   })

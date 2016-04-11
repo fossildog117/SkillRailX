@@ -3,12 +3,25 @@
       <a class="button button-icon icon ion-ios-search-strong" ui-sref="tabsController.search"></a>
   </ion-nav-buttons>
   <ion-content overflow-scroll="true" padding="true" class="has-header">
-    <div class="list">
-      <a ng-repeat="item in items" class="item item-thumbnail-left" ng-click="jobSelected(item)">
-        <img ng-src={{item.projectOwner['picture']}} alt="No picture">
-        <h4>{{item.projectOwner.displayName}}</h4>
-        <p>{{item.projectOwner.description}}</p>
-      </a>
-    </div>
+    <!--<div class="list">-->
+      <!--<a ng-repeat="item in items" class="item item-thumbnail-left" ng-click="jobSelected(item)">-->
+        <!--<img ng-src={{item.projectOwner['picture']}} alt="No picture">-->
+        <!--<h4>{{item.projectOwner.displayName}}</h4>-->
+        <!--<p>{{item.projectOwner.description}}</p>-->
+      <!--</a>-->
+    <!--</div>-->
+
+    <ion-list>
+      <ion-item class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="item in this.items" type="item-text-wrap" ng-click="jobSelected(item)">
+        <img ng-src="{{item.projectOwner['picture']}}">
+        <h2>{{item.projectOwner.displayName}}</h2>
+        <p style="font-size: 0.69em" class="item-text-wrap">{{item.title}}</p>
+        <p style="font-size: 0.69em" class="item-text-wrap">Budget: {{item.budget}}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+
+        <ion-option-button class="button-energized" ng-click="like(item)"><i class="icon ion-heart"></i></ion-option-button>
+      </ion-item>
+    </ion-list>
+
   </ion-content>
 </ion-view>

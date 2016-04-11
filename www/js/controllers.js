@@ -78,7 +78,7 @@ angular.module('app.controllers', ['ngRoute'])
 
     };
 
-    $scope.categories = CategoriesGET.getCategories;
+    $scope.categories = CategoriesGET.query();
 
     $scope.saveProfileSettings = function () {
 
@@ -277,7 +277,7 @@ angular.module('app.controllers', ['ngRoute'])
 
   .controller('searchCtrl', function ($scope, $state, SearchManager, CategoriesGET) {
 
-    $scope.categories = CategoriesGET.getCategories;
+    $scope.categories = CategoriesGET.query();
     $scope.searchResult = "";
 
     $scope.openCategory = function(categoryID, searchFor) {
