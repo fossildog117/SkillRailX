@@ -78,7 +78,7 @@ angular.module('app.controllers', ['ngRoute'])
 
     };
 
-    $scope.categories = CategoriesGET.query();
+    $scope.categories = CategoriesGET.getCategories();
 
     $scope.saveProfileSettings = function () {
 
@@ -145,20 +145,19 @@ angular.module('app.controllers', ['ngRoute'])
 
 
 
-
-
-
-
-
-
-  .controller('homeCtrl', function ($scope, PublicProjects, $state, JobManager) {
+  .controller('homeCtrl', function ($scope, PublicProjects, $state, JobManager, Loading) {
 
     $scope.initHome = function () {
+
+      Loading.show();
+
       PublicProjects.getPublicProjects().then(function (value) {
         $scope.items = value.data.items;
         console.log(value.data.items);
       }, function (error) {
         console.log(error);
+      }).finally( function () {
+        Loading.hide();
       })
     };
 
@@ -272,12 +271,9 @@ angular.module('app.controllers', ['ngRoute'])
 
 
 
-
-
-
   .controller('searchCtrl', function ($scope, $state, SearchManager, CategoriesGET) {
 
-    $scope.categories = CategoriesGET.query();
+    $scope.categories = CategoriesGET.getCategories();
     $scope.searchResult = "";
 
     $scope.openCategory = function(categoryID, searchFor) {
@@ -287,10 +283,6 @@ angular.module('app.controllers', ['ngRoute'])
     }
 
   })
-
-
-
-
 
 
 
@@ -315,7 +307,7 @@ angular.module('app.controllers', ['ngRoute'])
       console.log(value.data.items);
       }, function (error) {
       console.log(error);
-    })
+    });
 
     $scope.jobSelected = function (listing) {
       JobManager.setTempJob(listing);
@@ -324,14 +316,14 @@ angular.module('app.controllers', ['ngRoute'])
 
     $scope.filterBySearchResult = function () {
       return $scope.searchResult;
-    }
+    };
 
     $scope.filterByCategory = function() {
       if ($scope.category.title == "Results") {
         return {
                 title: "",
                 group: "",
-                description: "",
+                description: ""
               };
       } else {
         return $scope.category;

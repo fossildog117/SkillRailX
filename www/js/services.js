@@ -158,7 +158,7 @@ angular.module('app.services', ['ngResource'])
       postBid: function (bid) {
         return $http({
           method: 'POST',
-          url: url + 'api/Bid',
+          url: url + '/api/Bid',
           headers: {
             'Authorization': 'application/json'
           },
@@ -226,14 +226,25 @@ angular.module('app.services', ['ngResource'])
 
   .service('CategoriesGET', function(Loading, $http) {
     return {
-      getCategories: function() {
+      getCategories: function () {
         Loading.show();
+
+        this.request().then( function (value) {
+          console.log("successfully got categories");
+          console.log(value);
+        }, function (error) {
+          console.log("error has occured");
+        }).finally( function () {
+          Loading.hide();
+        })
+      },
+      request: function() {
         return $http({
           method: 'GET',
-          url: url + 'api/Categories',
+          url: url + '/api/Categories',
           headers: {
             'Authorization': 'application/json'
-          },
+          }
         })
       }
     }
