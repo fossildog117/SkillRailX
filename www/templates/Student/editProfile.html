@@ -1,5 +1,6 @@
 <ion-view title="Edit Profile" ng-controller="profileCtrl as parent" class="ng-scope">
   <ion-content overflow-scroll="true" padding="true" class="has-header ng-scope" ng-controller="editProfileCtrl as child">
+    <ion-item class="item-divider item-calm">Profile Information</ion-item>
     <label class="item item-input item-stacked-label">
       <span class="input-label">First name </span>
       <input id="businessName" type="text" value={{this.temp["firstName"]}} ng-model="temp.firstName">
@@ -21,7 +22,7 @@
       <input type="text" value={{this.temp["aboutMe"]}} ng-model="this.temp.aboutMe">
     </label>
     <div class="spacer calm" style="height: 10px;"></div>
-    <ion-item class="item-divider">Interests</ion-item>
+    <ion-item class="item-divider item-calm">Interests</ion-item>
     <ion-list ng-model="list">
       <div ng-repeat="item in interests">
       <ion-checkbox ng-model="item.checked" ng-true-value="true" ng-false-value="false">
@@ -29,13 +30,10 @@
       </ion-checkbox>
       </div>
     </ion-list>
-    <div class="spacer calm" style="height: 40px;"></div>
-    <a class="button button-assertive button-block" ui-sref="tabsController.profile">Cancel</a>
-    <a class="button button-balanced button-block" ng-click="saveProfileSettings()" ui-sref="tabsController.profile">Save</a>
+    <div class="spacer calm" style="height: 10px;"></div>
+    <div class="button-bar">
+      <a class="button button-assertive button-block" ui-sref="tabsController.profile">Cancel</a>
+      <a class="button button-balanced button-block" ng-click="saveProfileSettings()" ui-sref="tabsController.profile">Save</a>
+    </div>
   </ion-content>
 </ion-view>
-<<<<<<< HEAD
-
-<a ui-sref="home({veryLongParamHome:'Home'})">home</a>
-=======
->>>>>>> 470c64146c906e60fb74f523371c7daec650dcea

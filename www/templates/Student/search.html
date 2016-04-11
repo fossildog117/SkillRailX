@@ -11,9 +11,10 @@
     </div>
     <ion-item class="item-divider item-calm">Categories</ion-item>
     <ion-list>
-      <ion-item ng-repeat="category in categories.data" ng-click="openCategory(category)"
+      <ion-item class="item-icon-right" ng-repeat="category in categories.data" ng-click="openCategory(category)"
                 ui-sref="tabsController.search2">
-        {{category.title}}
+        <div>{{category.title}}</div>
+        <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
     </ion-list>
   </ion-content>

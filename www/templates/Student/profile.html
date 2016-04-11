@@ -1,6 +1,6 @@
 <ion-view title="Profile" id="page2" ng-controller="profileCtrl">
   <ion-nav-buttons side="right">
-    <a class="button button-icon icon" ui-sref="editProfile">Edit</a>
+    <a class="button button-icon ion-gear-a" ui-sref="editProfile"></a>
   </ion-nav-buttons>
   <ion-content overflow-scroll='false' delegate-handle="userDetailContent" on-scroll="onUserDetailContentScroll()" header-shrink scroll-event-interval="5">
       <div class="about-header">
@@ -22,32 +22,32 @@
     </div>
 
       <div class="card-profile padding-profile">
-      <h4 class="profile-title">Profile Summary </h4>
+      <h5 class="profile-title">Profile Summary </h5>
       <div class="profile-text">{{this.user.aboutMe}}</div>
       </div>
 
       <div class="card-profile padding-profile">
-      <h4 class="profile-title"> Short description </h4>
+        <h5 class="profile-title"> Short description </h5>
       <div class="profile-text"> {{this.user.description}} </div>
       </div>
 
       <div class="card-profile padding-profile">
-      <h4 class="profile-title">Skill</h4>
+      <h5 class="profile-title">Skill</h5>
       <div class="profile-text">{{this.user.skills}}</div>
       </div>
 
       <div class="card-profile padding-profile">
-      <h4 class="profile-title">Course</h4>
+      <h5 class="profile-title">Course</h5>
       <div class="profile-text">{{this.user.currentCourse}}</div>
       </div>
 
       <div class="card-profile padding-profile">
-      <h4 class="profile-title">Institution</h4>
+      <h5 class="profile-title">Institution</h5>
       <div class="profile-text">{{user.currentUniversity}}</div>
       </div>
 
       <div class="card-profile padding-profile">
-      <h4 class="profile-title">Interests</h4>
+      <h5 class="profile-title">Interests</h5>
       <div class="profile-text" ng-repeat="interest in this.user.interests"> {{interest.title}}</div>
       </div>
 

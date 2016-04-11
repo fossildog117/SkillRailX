@@ -14,9 +14,9 @@
     <ion-list>
       <ion-item class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="item in this.items" type="item-text-wrap" ng-click="jobSelected(item)">
         <img ng-src="{{item.projectOwner['picture']}}">
-        <h2>{{item.projectOwner.displayName}}</h2>
-        <p style="font-size: 0.69em" class="item-text-wrap">{{item.title}}</p>
-        <p style="font-size: 0.69em" class="item-text-wrap">Budget: {{item.budget}}</p>
+        <div class="job-title">{{item.title}}</div>
+        <div style="font-size: 0.69em" class="item-text-wrap job-owner">{{item.projectOwner.displayName}}</div>
+        <div style="font-size: 0.69em" class="item-text-wrap job-description">Budget: {{item.budget}}</div>
         <i class="icon ion-chevron-right icon-accessory"></i>
 
         <ion-option-button class="button-energized" ng-click="like(item)"><i class="icon ion-heart"></i></ion-option-button>

@@ -33,12 +33,24 @@ font-family: "Open Sans",sans-serif;
 
 */
 
-
-
-
 /*******************************************Self ADDED CSS********************************************/
 .padding-profile {
   padding: 20px;
+}
+
+.job-owner{
+  color: #2D5C84;
+  font-weight: bold;
+}
+
+.job-title {
+  color: #444D58;
+  font-weight: bold;
+  font-size: 16 px;
+}
+
+.job-description{
+  color: #444D58;
 }
 
 .card-profile{
@@ -5844,6 +5856,8 @@ ion-tabs.tabs-color-active-dark .tab-item {
  * Items
  * --------------------------------------------------
  */
+
+
 .item {
   border-color: #ddd;
   background-color: #fff;
@@ -5855,11 +5869,11 @@ ion-tabs.tabs-color-active-dark .tab-item {
   padding: 16px;
   border-width: 1px;
   border-style: solid;
-  font-size: 16px; }
+  font-size: 15px; }
   .item h2 {
     margin: 0 0 2px 0;
-    font-size: 16px;
-    font-weight: normal; }
+    /*font-size: 16px;
+  font-weight: normal;*/ }
   .item h3 {
     margin: 0 0 4px 0;
     font-size: 14px; }
@@ -5910,8 +5924,8 @@ ion-tabs.tabs-color-active-dark .tab-item {
     background-color: #387ef5;
     color: #fff; }
   .item.item-calm {
-    border-color: #0a9dc7;
-    background-color: #11c1f3;
+    border-color: #337AB7;
+    background-color: #337AB7;
     color: #fff; }
   .item.item-assertive {
     border-color: #e42112;
