@@ -224,21 +224,9 @@ angular.module('app.services', ['ngResource'])
   //   return $resource(url + '/api/Categories').finally(function() {Loading.hide()});
   // })
 
-  .service('CategoriesGET', function(Loading, $http) {
+  .service('CategoriesGET', function($http) {
     return {
-      getCategories: function () {
-        Loading.show();
-
-        this.request().then( function (value) {
-          console.log("successfully got categories");
-          console.log(value);
-        }, function (error) {
-          console.log("error has occured");
-        }).finally( function () {
-          Loading.hide();
-        })
-      },
-      request: function() {
+      getCategories: function() {
         return $http({
           method: 'GET',
           url: url + '/api/Categories',

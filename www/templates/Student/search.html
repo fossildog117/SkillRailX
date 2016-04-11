@@ -1,23 +1,20 @@
 <ion-view title="Search" id="page4">
   <ion-content overflow-scroll="true" padding="true" class="has-header">
     <div class="item-input-inset">
-  <label class="item-input-wrapper">
-    <i class="icon ion-ios-search placeholder-icon"></i>
-    <input ng-model="this.searchResult" type="search" placeholder="Search for Jobs">
-  </label>
-  <button ng-click="openCategory(0,this.searchResult)" ui-sref="tabsController.search2" class="button button-clear">
-    Submit
-  </button>
-</div>
-    <!-- <form class="list">
-      <label class="item item-input">
-        <i class="icon ion-search placeholder-icon"></i>
-        <input type="search" placeholder="">
+      <label class="item-input-wrapper">
+        <i class="icon ion-ios-search placeholder-icon"></i>
+        <input ng-model="this.searchResult" type="search" placeholder="Search for Jobs">
       </label>
-    </form> -->
-    <ion-item class="item-divider">Categories</ion-item>
+      <button ng-click="openCategory(0,this.searchResult)" ui-sref="tabsController.search2" class="button button-clear">
+        Submit
+      </button>
+    </div>
+    <ion-item class="item-divider item-calm">Categories</ion-item>
     <ion-list>
-      <ion-item ng-repeat="category in categories" ng-click="openCategory(category)" ui-sref="tabsController.search2">{{category.title}} </ion-item>
+      <ion-item ng-repeat="category in categories.data" ng-click="openCategory(category)"
+                ui-sref="tabsController.search2">
+        {{category.title}}
+      </ion-item>
     </ion-list>
   </ion-content>
 </ion-view>

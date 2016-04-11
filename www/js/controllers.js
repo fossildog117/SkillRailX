@@ -6,7 +6,7 @@ angular.module('app.controllers', ['ngRoute'])
 
     $scope.user = {};
 
-    function setUser (input) {
+    function setUser(input) {
       $scope.user = input;
     }
 
@@ -36,16 +36,13 @@ angular.module('app.controllers', ['ngRoute'])
     //**********************************CSS*********************************//
 
     $ionicSlideBoxDelegate.update();
-    $scope.onUserDetailContentScroll =  function onUserDetailContentScroll(){
+    $scope.onUserDetailContentScroll = function onUserDetailContentScroll() {
       var scrollDelegate = $ionicScrollDelegate.$getByHandle('userDetailContent');
       var scrollView = scrollDelegate.getScrollView();
       $scope.$broadcast('userDetailContent.scroll', scrollView);
     }
 
   })
-
-
-
 
 
   .controller('editProfileCtrl', function ($state, $route, $scope, $rootScope, PopUpManager, ProfileManager, Token, CategoriesGET) {
@@ -72,7 +69,12 @@ angular.module('app.controllers', ['ngRoute'])
         {title: "Translation", group: "Copywriting", id: 5, checked: interestStatusChecker("Translation")},
         {title: "Videography", group: "Media", id: 6, checked: interestStatusChecker("Videography")},
         {title: "Web Analytics", group: "Techies", id: 7, checked: interestStatusChecker("Web Analytics")},
-        {title: "Social Media Marketing", group: "Techies", id: 8, checked: interestStatusChecker("Social Media Marketing")},
+        {
+          title: "Social Media Marketing",
+          group: "Techies",
+          id: 8,
+          checked: interestStatusChecker("Social Media Marketing")
+        },
         {title: "SEO", group: "Techies", id: 9, checked: interestStatusChecker("SEO")}
       ];
 
@@ -124,25 +126,23 @@ angular.module('app.controllers', ['ngRoute'])
       };
 
       ProfileManager.editProfile(newSettings, Token.getProperty()).then(function (response) {
-         console.log(response.data);
-         ProfileManager.setProfileDetails(response.data);
-         ProfileManager.setInterests($scope.newInterests);
+        console.log(response.data);
+        ProfileManager.setProfileDetails(response.data);
+        ProfileManager.setInterests($scope.newInterests);
 
-         $rootScope.$emit('saveSuccess', newSettings);
+        $rootScope.$emit('saveSuccess', newSettings);
 
-         PopUpManager.alert('Your settings have been successfully saved');
+        PopUpManager.alert('Your settings have been successfully saved');
 
-       }, function (response) {
-         ProfileManager.setProfileDetails(newSettings);
-         console.log(response)
-       })
-     };
+      }, function (response) {
+        ProfileManager.setProfileDetails(newSettings);
+        console.log(response)
+      })
+    };
 
-     $scope.initEditProfileCtrl();
+    $scope.initEditProfileCtrl();
 
-   })
-
-
+  })
 
 
   .controller('homeCtrl', function ($scope, PublicProjects, $state, JobManager, Loading) {
@@ -156,7 +156,7 @@ angular.module('app.controllers', ['ngRoute'])
         console.log(value.data.items);
       }, function (error) {
         console.log(error);
-      }).finally( function () {
+      }).finally(function () {
         Loading.hide();
       })
     };
@@ -168,13 +168,6 @@ angular.module('app.controllers', ['ngRoute'])
 
     $scope.initHome();
   })
-
-
-
-
-
-
-
 
 
   .controller('publicJobsCtrl', function ($scope, JobManager, $state) {
@@ -195,19 +188,16 @@ angular.module('app.controllers', ['ngRoute'])
   })
 
 
-
-
-
-  .controller('createBidCtrl', function ($scope, JobManager, BidManager) {
+  .controller('createBidCtrl', function ($scope, JobManager, BidManager, PopUpManager) {
 
     // currently configuring bids
     $scope.postBid = function () {
       var user = JobManager.getTempJob();
       var bid = {
         // Configure Bid
-        'bidAmount' : this.newBid,
-        'description' : this.newDescription,
-        'job' : JobManager.getTempJob()
+        'bidAmount': this.newBid,
+        'description': this.newDescription,
+        'job': JobManager.getTempJob()
       };
 
       console.log(bid);
@@ -215,16 +205,18 @@ angular.module('app.controllers', ['ngRoute'])
 
       BidManager.setBid(bid);
       BidManager.addBid(bid);
-      BidManager.postBid().then(function (value) {
-        // Configure if POST is successful
-      }, function (error) {
-        // Handle error
-      });
+      PopUpManager.alert("Your bid has been successfully submitted");
+
+      //
+      // Waiting for client to configure /api/Bid endpoint
+      //
+      //BidManager.postBid().then(function (value) {
+      //  // Configure if POST is successful
+      //}, function (error) {
+      //  // Handle error
+      //});
     }
   })
-
-
-
 
 
   .controller('myJobsCtrl', function ($state, $scope, BidManager, PopUpManager) {
@@ -235,7 +227,7 @@ angular.module('app.controllers', ['ngRoute'])
       console.log("hello success");
 
       if (BidManager.getBids().length == 0) {
-        $scope.bidsList = [{'description' : "You currently have no bids"}];
+        $scope.bidsList = [{'description': "You currently have no bids"}];
       } else {
         $scope.bidsList = BidManager.getBids();
       }
@@ -270,20 +262,34 @@ angular.module('app.controllers', ['ngRoute'])
   })
 
 
+  .controller('searchCtrl', function ($scope, $state, SearchManager, CategoriesGET, Loading) {
 
-  .controller('searchCtrl', function ($scope, $state, SearchManager, CategoriesGET) {
-
-    $scope.categories = CategoriesGET.getCategories();
-    $scope.searchResult = "";
-
-    $scope.openCategory = function(categoryID, searchFor) {
+    $scope.openCategory = function (categoryID, searchFor) {
 
       SearchManager.setID(categoryID);
       SearchManager.setSearchResult(searchFor);
-    }
+
+    };
+
+    $scope.initSearchCtrl = function () {
+
+      Loading.show();
+
+      CategoriesGET.getCategories().then(function (value) {
+        $scope.categories = value;
+        $scope.searchResult = "";
+        console.log($scope.categories);
+      }, function (error) {
+        console.log("An error has occured");
+      }).finally(function () {
+        Loading.hide();
+      });
+
+    };
+
+    $scope.initSearchCtrl();
 
   })
-
 
 
   .controller('search2Ctrl', function ($state, $scope, JobManager, SearchManager, PublicProjects) {
@@ -305,7 +311,7 @@ angular.module('app.controllers', ['ngRoute'])
       console.log($scope.searchResult);
 
       console.log(value.data.items);
-      }, function (error) {
+    }, function (error) {
       console.log(error);
     });
 
@@ -318,13 +324,13 @@ angular.module('app.controllers', ['ngRoute'])
       return $scope.searchResult;
     };
 
-    $scope.filterByCategory = function() {
+    $scope.filterByCategory = function () {
       if ($scope.category.title == "Results") {
         return {
-                title: "",
-                group: "",
-                description: ""
-              };
+          title: "",
+          group: "",
+          description: ""
+        };
       } else {
         return $scope.category;
       }
