@@ -66,6 +66,16 @@ angular.module('app.routes', [])
         }
       })
 
+      .state('tabsController.viewBid', {
+          url: '/viewbid',
+          views: {
+            'tab3' : {
+              templateUrl : 'templates/Student/viewBid.html',
+              controller: 'viewBidCtrl'
+            }
+          }
+        })
+
       .state('tabsController', {
         url: '/tab',
         templateUrl: 'templates/Student/tabsController.html',

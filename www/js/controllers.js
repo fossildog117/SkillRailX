@@ -199,12 +199,6 @@ angular.module('app.controllers', ['ngRoute'])
 
 
 
-
-
-
-
-
-
   .controller('createBidCtrl', function ($scope, JobManager, BidManager) {
 
     // currently configuring bids
@@ -212,8 +206,9 @@ angular.module('app.controllers', ['ngRoute'])
       var user = JobManager.getTempJob();
       var bid = {
         // Configure Bid
-        'bid' : this.newBid,
-        'description' : this.newDescription
+        'bidAmount' : this.newBid,
+        'description' : this.newDescription,
+        'job' : JobManager.getTempJob()
       };
 
       console.log(bid);
@@ -227,15 +222,13 @@ angular.module('app.controllers', ['ngRoute'])
         // Handle error
       });
     }
-
   })
 
 
 
 
 
-
-  .controller('myJobsCtrl', function ($state, $scope, BidManager) {
+  .controller('myJobsCtrl', function ($state, $scope, BidManager, PopUpManager) {
 
     $scope.bidsList = [];
 
@@ -252,13 +245,30 @@ angular.module('app.controllers', ['ngRoute'])
     $scope.userProposals = function (item) {
 
       BidManager.setBid(item);
-      $state.go();
 
+      if ($scope.bidsList[0].description == "You currently have no bids") {
+        PopUpManager.alert("You currently have no bids");
+      } else {
+        $state.go('tabsController.viewBid');
+      }
     };
 
     $scope.initSearchCtrl();
   })
 
+  .controller('viewBidCtrl', function ($state, $scope, BidManager) {
+
+    $scope.bid = {};
+
+    $scope.initViewBidController = function () {
+      $scope.bid = BidManager.getBid();
+      console.log("hello");
+      console.log($scope.bid);
+    };
+
+    $scope.initViewBidController();
+
+  })
 
 
 

@@ -1,41 +1,16 @@
 <ion-view title="Job" id="page5" ng-controller="publicJobsCtrl">
   <ion-content overflow-scroll="true" padding="true" class="has-header">
-    <h2>{{this.viewedListing.title}}</h2>
-    <p>{{this.viewedListing.budget}}</p>
-    <p>{{this.viewedListing.projectBrief}}</p>
-    <p>{{this.viewedListing.deadline}}</p>
-    <div class="list">
-      <label class="item item-input item-floating-label">
-      </label>
-      <label class="item item-input item-floating-label">
-        <span class="input-label">Description</span>
-        <input type="text" placeholder="Why you are suitable for this job" ng-model="newDescription">
-      </label>
-    </div>
-
-
     <div class="list card">
-
-      <div class="item item-avatar">
-        <h2>{{}}</h2>
-        <p></p>
+      <div class="item">
+        <h2>{{this.bid.job.title}}</h2><br/>
+        <p>Bid: £{{this.bid.bidAmount}}</p><br/>
+        <p>{{this.bid.description}}</p>
       </div>
-
       <div class="item item-body">
-        <img class="full-image" src="delorean.jpg">
-        <p>
-          This is a "Facebook" styled Card. The header is created from a Thumbnail List item,
-          the content is from a card-body consisting of an image and paragraph text. The footer
-          consists of tabs, icons aligned left, within the card-footer.
-        </p>
-        <p>
-          <a href="#" class="subdued">1 Like</a>
-          <a href="#" class="subdued">5 Comments</a>
-        </p>
+        <p>Deadline - {{this.bid.job.deadline}}</p>
+        <p>Budget - {{this.bid.job.budget}}</p>
+        <p>Project brief: <br/><br/>{{this.bid.job.projectBrief}}</p>
       </div>
-
     </div>
-
-
   </ion-content>
 </ion-view>
