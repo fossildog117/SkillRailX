@@ -34,6 +34,16 @@ font-family: "Open Sans",sans-serif;
 */
 
 /*******************************************Self ADDED CSS********************************************/
+
+.p-profile {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.h5-profile {
+  font-weight: bold;
+}
+
 .padding-profile {
   padding: 10px;
 }
@@ -3512,7 +3522,8 @@ textarea {
   /* 2 */ }
 
 img {
-  -webkit-user-drag: none; }
+  -webkit-user-drag: none;
+    border-radius: 3px;}
 
 /* ==========================================================================
    Tables
@@ -6379,8 +6390,9 @@ a.item-content {
 
 .item-icon-left .icon-accessory,
 .item-icon-right .icon-accessory {
-  color: #ccc;
-  font-size: 16px; }
+  color: #444D58;
+  font-size: 16px;
+ }
 
 .item-icon-left .icon-accessory {
   left: 3px; }
@@ -6535,7 +6547,9 @@ button.item.item-button-right {
 .item-avatar-left.item-complex,
 .item-thumbnail-left.item-complex {
   padding-top: 0;
-  padding-left: 0; }
+  padding-left: 0;
+  border-radius: 3px;
+  border-color: rgba(29,49,91,0.3);}
 
 .item-thumbnail-right,
 .item-thumbnail-right .item-content {
@@ -8219,7 +8233,8 @@ input:checked + .checkbox-icon:after {
   opacity: 1; }
 
 .item-checkbox {
-  padding-left: 60px; }
+  padding-left: 60px;
+  font-size: 14px;}
   .item-checkbox.active {
     box-shadow: none; }
 

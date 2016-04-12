@@ -2,7 +2,7 @@ angular.module('app.controllers', ['ngRoute'])
 
   // nathan.liu.15@ucl.ac.uk
 
-  .controller('profileCtrl', function ($ionicScrollDelegate, $ionicSlideBoxDelegate, $scope, $rootScope, $route, $state, $timeout, Token, ProfileManager) {
+  .controller('profileCtrl', function ($ionicScrollDelegate, $ionicSlideBoxDelegate, $scope, $rootScope, $route, $state, $timeout, Token, ProfileManager, Loading) {
 
     $scope.user = {};
 
@@ -11,7 +11,7 @@ angular.module('app.controllers', ['ngRoute'])
     }
 
     $scope.initProfileCtrl = function () {
-      console.log("HELLO");
+      Loading.show()
       ProfileManager.loadProfile(Token.getProperty()).then(function (response) {
 
         console.log(response.data);
@@ -20,6 +20,8 @@ angular.module('app.controllers', ['ngRoute'])
 
       }, function (value) {
         console.log(value);
+      }).finally( function() {
+        Loading.hide();
       });
     };
 
@@ -101,17 +103,28 @@ angular.module('app.controllers', ['ngRoute'])
       }
 
       var newSettings = {
+        "firstName": $scope.user.firstName,
+        "lastName": $scope.user.lastName,
         "title": $scope.user.title,
+        "uniqueUrl": $scope.user.uniqueUrl,
         "aboutMe": $scope.user.aboutMe,
-        "description": $scope.user.description,
-        "pictureUrl": "/Content/layouts/layout3/img/avatar.png",
-        "isStudent": true,
-        "studentEmail": "sample@sample.com",
-        "interests": $scope.newInterests,
+        "pictureUrl": $scope.user.pictureUrl,
+        "averageRating": $scope.user.averageRating,
+        "completedProjects": $scope.user.completedProjects,
+        "isStudent": $scope.user.isStudent,
+        "studentEmail": $scope.user.studentEmail,
+        "companyName": $scope.user.companyName,
+        "interests":$scope.newInterests,
+        "isActive": $scope.user.isActive,
         "skills": $scope.user.skills,
+        "ongoingProjects": $scope.user.ongoingProjects,
+        "completeProjects": $scope.user.completeProjects,
+        "failedProjects": $scope.user.failedProjects,
         "currentUniversity": $scope.user.currentUniversity,
         "currentCourse": $scope.user.currentCourse,
-        "location": $scope.user.location
+        "graduationYear": $scope.user.graduationYear,
+        "location": $scope.user.location,
+        "id": $scope.user.id,
       };
 
       ProfileManager.editProfile(newSettings, Token.getProperty()).then(function (response) {
