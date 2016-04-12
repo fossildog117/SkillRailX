@@ -2,24 +2,32 @@
   <ion-content overflow-scroll="true" padding="true" class="has-header ng-scope" ng-controller="editProfileCtrl as child">
     <ion-item class="item-divider item-calm">Profile Information</ion-item>
     <label class="item item-input item-stacked-label">
-      <span class="input-label">First name </span>
-      <input id="businessName" type="text" value={{this.temp["firstName"]}} ng-model="temp.firstName">
+      <span class="input-label">Tagline </span>
+      <input id="businessName" type="text" value={{this.temp["title"]}} ng-model="temp.title">
     </label>
     <label class="item item-input item-stacked-label">
-      <span class="input-label">Last name</span>
-      <input type="text" value={{this.temp["lastName"]}} ng-model="this.temp.lastName">
+      <span class="input-label">Location</span>
+      <input type="text" value={{this.temp["location"]}} ng-model="this.temp.location">
     </label>
     <label class="item item-input item-stacked-label">
-      <span class="input-label">Institution</span>
-      <input type="text" value={{this.temp.currentUniversity}} ng-model="this.temp.currentUniversity">
+      <span class="input-label">Profile Summary</span>
+      <textarea value={{this.temp["aboutMe"]}} ng-model="this.temp.aboutMe"></textarea>
     </label>
     <label class="item item-input item-stacked-label">
-      <span class="input-label">Course</span>
-      <input type="text" value={{this.temp.currentCourse}} ng-model="this.temp.currentCourse">
+      <span class="input-label">Short Description</span>
+      <textarea value={{this.temp["description"]}} ng-model="this.temp.description"></textarea>
     </label>
     <label class="item item-input item-stacked-label">
-      <span class="input-label">About me</span>
-      <input type="text" value={{this.temp["aboutMe"]}} ng-model="this.temp.aboutMe">
+      <span class="input-label">Skills</span>
+      <textarea value={{this.temp["skills"]}} ng-model="this.temp.skills"></textarea>
+    </label>
+    <label class="item item-input item-stacked-label">
+      <span class="input-label">Current Course</span>
+      <input type="text" value={{this.temp["currentCourse"]}} ng-model="this.temp.currentCourse">
+    </label>
+    <label class="item item-input item-stacked-label">
+      <span class="input-label">Current University</span>
+      <input type="text" value={{this.temp["currentUniversity"]}} ng-model="this.temp.currentUniversity">
     </label>
     <div class="spacer calm" style="height: 10px;"></div>
     <ion-item class="item-divider item-calm">Interests</ion-item>

@@ -35,7 +35,26 @@ font-family: "Open Sans",sans-serif;
 
 /*******************************************Self ADDED CSS********************************************/
 .padding-profile {
-  padding: 20px;
+  padding: 10px;
+}
+
+.padding-login {
+  padding: 2.5%;
+  padding-top: 30%;
+  background-color: #3FC9D5;
+}
+
+.home .scroll-content {
+  display: table !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin-top: -50px; /* the height of the centered content */
+  text-align: center;
+}
+
+.home .scroll {
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .job-owner{
@@ -3568,7 +3587,7 @@ body.grade-c {
   left: 0;
   overflow: hidden;
   margin-top: -1px;
-  padding-top: 1px;
+  /*padding-top: 1px;*/
   margin-bottom: -1px;
   width: auto;
   height: auto; }
@@ -6562,7 +6581,10 @@ button.item.item-button-right {
   min-height: 30px;
   background-color: #f5f5f5;
   color: #222;
-  font-weight: 500; }
+  font-weight: 500;
+  border-top-left-radius:4px;
+  border-top-right-radius:4px;
+}
 
 .platform-ios .item-divider-platform,
 .item-divider-ios {
@@ -7824,7 +7846,8 @@ textarea {
   max-width: 200px;
   width: 35%;
   color: #444;
-  font-size: 16px; }
+  font-size: 14px;
+  font-weight: bold; }
 
 .placeholder-icon {
   color: #aaa; }

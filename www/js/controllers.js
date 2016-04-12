@@ -101,28 +101,17 @@ angular.module('app.controllers', ['ngRoute'])
       }
 
       var newSettings = {
-        "firstName": $scope.user.firstName,
-        "lastName": $scope.user.lastName,
-        "title": null,
-        "uniqueUrl": null,
+        "title": $scope.user.title,
         "aboutMe": $scope.user.aboutMe,
-        "description": null,
+        "description": $scope.user.description,
         "pictureUrl": "/Content/layouts/layout3/img/avatar.png",
-        "averageRating": 0,
-        "completedProjects": 0,
         "isStudent": true,
         "studentEmail": "sample@sample.com",
-        "companyName": null,
         "interests": $scope.newInterests,
-        "skills": null,
-        "ongoingProjects": 0,
-        "completeProjects": 0,
-        "failedProjects": 0,
+        "skills": $scope.user.skills,
         "currentUniversity": $scope.user.currentUniversity,
         "currentCourse": $scope.user.currentCourse,
-        "graduationYear": null,
-        "location": null,
-        "id": 0
+        "location": $scope.user.location
       };
 
       ProfileManager.editProfile(newSettings, Token.getProperty()).then(function (response) {
