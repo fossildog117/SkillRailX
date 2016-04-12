@@ -1,18 +1,31 @@
 <ion-view title="{{category.title}}" id="page5">
     <ion-content overflow-scroll="true" padding="true" class="has-header">
 
-      <div class="list">
+      <!-- <div class="list">
         <a ng-repeat="item in items | filter: { title: filterBySearchResult() } as results" class="item item-thumbnail-left" ng-click="jobSelected(item)">
           <img ng-src={{item.projectOwner['picture']}} alt="No picture">
           <h4>{{item.projectOwner.displayName}}</h4>
           <p>{{item.projectOwner.description}}</p>
         </a>
         <p ng-if="results.length == 0"> NOTHING CORRESPONDS TO YOUR SEARCH! </p>
-      </div>
+      </div> -->
 
       <!-- <a ng-repeat="item in items | filter: {category : filterByCategory() } | filter { title: searchResult }" class="item item-thumbnail-left" ng-click="jobSelected(item)"> -->
       <!-- <p> The filtered by this name for job title: {{searchResult}} </p>
       <p> Filtered by this category for job category: {{category.title}} </p> -->
+
+      <ion-list>
+        <ion-item class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="item in items | filter: { title: filterBySearchResult() } as results" type="item-text-wrap" ng-click="jobSelected(item)">
+          <img ng-src="{{item.projectOwner['picture']}}">
+          <div class="job-title">{{item.title}}</div>
+          <div style="font-size: 0.69em" class="item-text-wrap job-owner">{{item.projectOwner.displayName}}</div>
+          <div style="font-size: 0.69em" class="item-text-wrap job-description">Budget: {{item.budget}}</div>
+          <i class="icon ion-chevron-right icon-accessory"></i>
+
+          <ion-option-button class="button-energized" ng-click="like(item)"><i class="icon ion-heart"></i></ion-option-button>
+        </ion-item>
+        <p ng-if="results.length == 0"> NOTHING CORRESPONDS TO YOUR SEARCH! </p>
+      </ion-list>
 
     </ion-content>
 </ion-view>

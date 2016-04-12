@@ -8859,13 +8859,13 @@ progress {
         color: #fff; }
   .button.button-calm {
     border-color: transparent;
-    background-color: #11c1f3;
+    background-color: #2D5C84;
     color: #fff; }
     .button.button-calm:hover {
       color: #fff;
       text-decoration: none; }
     .button.button-calm.active, .button.button-calm.activated {
-      background-color: #0a9dc7; }
+      background-color: #214d6a; }
     .button.button-calm.button-clear {
       border-color: transparent;
       background: none;
@@ -8879,7 +8879,7 @@ progress {
       background: transparent;
       color: #11c1f3; }
       .button.button-calm.button-outline.active, .button.button-calm.button-outline.activated {
-        background-color: #11c1f3;
+        background-color: #214d6a;
         box-shadow: none;
         color: #fff; }
   .button.button-assertive {
