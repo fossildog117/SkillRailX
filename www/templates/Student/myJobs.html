@@ -4,8 +4,8 @@
     <p> if not the page says you have to apply for jobs :) -->
     <div class="spacer calm" style="height: 10px;"></div>
     <ion-item class="item-divider item-calm">Your Proposals</ion-item>
-    <ion-item ng-repeat="item in this.bidsList" ng-click="userProposals(item)">
-      {{item.bid}} - {{item.description}}
+    <ion-item ng-repeat="item in this.bidList" ng-click="viewProposal(item)">
+      {{item.project.title}}
     </ion-item>
     <div class="spacer" style="height: 40px;"></div>
     <ion-item class="item-divider item-calm">Your Jobs</ion-item>

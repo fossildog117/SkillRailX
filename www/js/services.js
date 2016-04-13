@@ -119,33 +119,43 @@ angular.module('app.services', ['ngResource'])
     }
   })
 
-  .service('BidManager', function ($http) {
+  .service('BidManager', function ($http, Token) {
 
-    var listOfBids = [];
+    var allBids = [];
     var bid = {};
 
     return {
-      postBid: function () {
+      postBid: function (bid) {
         return $http({
           method: 'POST',
           url: url + '/api/Bid',
           headers: {
+            'Authorization' : 'Bearer ' + Token.getProperty(),
             'Content-Type': 'application/json'
           },
           data: bid
         })
+      },
+      retrieveBids: function () {
+        return $http({
+          method: 'GET',
+          url: url + '/api/Bid',
+          headers: {
+            'Authorization' : 'Bearer ' + Token.getProperty()
+          }
+        })
+      },
+      setAllBids: function (bids) {
+        allBids = bid;
+      },
+      getAllBids: function () {
+        return allBids;
       },
       setBid: function (newBid) {
         bid = newBid;
       },
       getBid: function () {
         return bid;
-      },
-      getBids: function () {
-        return listOfBids;
-      },
-      addBid: function (bid) {
-        listOfBids.push(bid);
       }
     }
   })

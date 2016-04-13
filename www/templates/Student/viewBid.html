@@ -1,15 +1,15 @@
 <ion-view title="Job" id="page5" ng-controller="publicJobsCtrl">
   <ion-content overflow-scroll="true" padding="true" class="has-header">
     <div class="list card">
-      <div class="item">
-        <h2>{{this.bid.job.title}}</h2><br/>
-        <p>Bid: £{{this.bid.bidAmount}}</p><br/>
-        <p>{{this.bid.description}}</p>
+      <div class="item item-body">
+        <p><b>{{this.bid.project.title}}</b></p>
+        <p>Bid: £{{this.bid.offer}}</p>
+        <p>{{this.bid.proposal}}</p>
       </div>
       <div class="item item-body">
-        <p>Deadline - {{this.bid.job.deadline}}</p>
-        <p>Budget - {{this.bid.job.budget}}</p>
-        <p>Project brief: <br/><br/>{{this.bid.job.projectBrief}}</p>
+        <p>Deadline - {{this.bid.project.deadline}}</p>
+        <p>Budget - {{this.bid.project.budget}}</p>
+        <p>Project brief: <br/><br/>{{this.bid.project.projectBrief}}</p>
       </div>
     </div>
   </ion-content>

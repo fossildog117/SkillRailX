@@ -34,8 +34,37 @@ font-family: "Open Sans",sans-serif;
 */
 
 /*******************************************Self ADDED CSS********************************************/
+
+.p-profile {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.h5-profile {
+  font-weight: bold;
+}
+
 .padding-profile {
-  padding: 20px;
+  padding: 10px;
+}
+
+.padding-login {
+  padding: 2.5%;
+  padding-top: 30%;
+  background-color: #3FC9D5;
+}
+
+.home .scroll-content {
+  display: table !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin-top: -50px; /* the height of the centered content */
+  text-align: center;
+}
+
+.home .scroll {
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .job-owner{
@@ -3493,7 +3522,8 @@ textarea {
   /* 2 */ }
 
 img {
-  -webkit-user-drag: none; }
+  -webkit-user-drag: none;
+    border-radius: 3px;}
 
 /* ==========================================================================
    Tables
@@ -3568,7 +3598,7 @@ body.grade-c {
   left: 0;
   overflow: hidden;
   margin-top: -1px;
-  padding-top: 1px;
+  /*padding-top: 1px;*/
   margin-bottom: -1px;
   width: auto;
   height: auto; }
@@ -4748,7 +4778,7 @@ a.subdued {
   top: 4%; }
 
 .tabs-striped.tabs-calm .tabs {
-  background-color: #11c1f3; }
+  background-color: #444D58; }
 
 .tabs-striped.tabs-calm .tab-item {
   color: rgba(255, 255, 255, 0.4);
@@ -6360,8 +6390,9 @@ a.item-content {
 
 .item-icon-left .icon-accessory,
 .item-icon-right .icon-accessory {
-  color: #ccc;
-  font-size: 16px; }
+  color: #444D58;
+  font-size: 16px;
+ }
 
 .item-icon-left .icon-accessory {
   left: 3px; }
@@ -6516,7 +6547,9 @@ button.item.item-button-right {
 .item-avatar-left.item-complex,
 .item-thumbnail-left.item-complex {
   padding-top: 0;
-  padding-left: 0; }
+  padding-left: 0;
+  border-radius: 3px;
+  border-color: rgba(29,49,91,0.3);}
 
 .item-thumbnail-right,
 .item-thumbnail-right .item-content {
@@ -6562,7 +6595,10 @@ button.item.item-button-right {
   min-height: 30px;
   background-color: #f5f5f5;
   color: #222;
-  font-weight: 500; }
+  font-weight: 500;
+  border-top-left-radius:4px;
+  border-top-right-radius:4px;
+}
 
 .platform-ios .item-divider-platform,
 .item-divider-ios {
@@ -7824,7 +7860,8 @@ textarea {
   max-width: 200px;
   width: 35%;
   color: #444;
-  font-size: 16px; }
+  font-size: 14px;
+  font-weight: bold; }
 
 .placeholder-icon {
   color: #aaa; }
@@ -8196,7 +8233,8 @@ input:checked + .checkbox-icon:after {
   opacity: 1; }
 
 .item-checkbox {
-  padding-left: 60px; }
+  padding-left: 60px;
+  font-size: 14px;}
   .item-checkbox.active {
     box-shadow: none; }
 

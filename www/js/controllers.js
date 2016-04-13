@@ -2,7 +2,7 @@ angular.module('app.controllers', ['ngRoute'])
 
   // nathan.liu.15@ucl.ac.uk
 
-  .controller('profileCtrl', function ($ionicScrollDelegate, $ionicSlideBoxDelegate, $scope, $rootScope, $route, $state, $timeout, Token, ProfileManager) {
+  .controller('profileCtrl', function ($ionicScrollDelegate, $ionicSlideBoxDelegate, $scope, $rootScope, $route, $state, $timeout, Token, ProfileManager, Loading) {
 
     $scope.user = {};
 
@@ -11,7 +11,7 @@ angular.module('app.controllers', ['ngRoute'])
     }
 
     $scope.initProfileCtrl = function () {
-      console.log("HELLO");
+      Loading.show()
       ProfileManager.loadProfile(Token.getProperty()).then(function (response) {
 
         console.log(response.data);
@@ -20,6 +20,8 @@ angular.module('app.controllers', ['ngRoute'])
 
       }, function (value) {
         console.log(value);
+      }).finally( function() {
+        Loading.hide();
       });
     };
 
@@ -103,26 +105,27 @@ angular.module('app.controllers', ['ngRoute'])
       var newSettings = {
         "firstName": $scope.user.firstName,
         "lastName": $scope.user.lastName,
-        "title": null,
-        "uniqueUrl": null,
+        "title": $scope.user.title,
+        "uniqueUrl": $scope.user.uniqueUrl,
         "aboutMe": $scope.user.aboutMe,
-        "description": null,
-        "pictureUrl": "/Content/layouts/layout3/img/avatar.png",
-        "averageRating": 0,
-        "completedProjects": 0,
-        "isStudent": true,
-        "studentEmail": "sample@sample.com",
-        "companyName": null,
-        "interests": $scope.newInterests,
-        "skills": null,
-        "ongoingProjects": 0,
-        "completeProjects": 0,
-        "failedProjects": 0,
+        "pictureUrl": $scope.user.pictureUrl,
+        "description": $scope.user.description,
+        "averageRating": $scope.user.averageRating,
+        "completedProjects": $scope.user.completedProjects,
+        "isStudent": $scope.user.isStudent,
+        "studentEmail": $scope.user.studentEmail,
+        "companyName": $scope.user.companyName,
+        "interests":$scope.newInterests,
+        "isActive": $scope.user.isActive,
+        "skills": $scope.user.skills,
+        "ongoingProjects": $scope.user.ongoingProjects,
+        "completeProjects": $scope.user.completeProjects,
+        "failedProjects": $scope.user.failedProjects,
         "currentUniversity": $scope.user.currentUniversity,
         "currentCourse": $scope.user.currentCourse,
-        "graduationYear": null,
-        "location": null,
-        "id": 0
+        "graduationYear": $scope.user.graduationYear,
+        "location": $scope.user.location,
+        "id": $scope.user.id,
       };
 
       ProfileManager.editProfile(newSettings, Token.getProperty()).then(function (response) {
@@ -192,54 +195,53 @@ angular.module('app.controllers', ['ngRoute'])
 
     // currently configuring bids
     $scope.postBid = function () {
-      var user = JobManager.getTempJob();
+
       var bid = {
         // Configure Bid
-        'bidAmount': this.newBid,
-        'description': this.newDescription,
-        'job': JobManager.getTempJob()
+        "offer": this.newBid,
+        "project": {
+          "id": JobManager.getTempJob().id
+        },
+        "proposal": this.newDescription
       };
 
       console.log(bid);
-      console.log(BidManager.getBids());
 
-      BidManager.setBid(bid);
-      BidManager.addBid(bid);
-      PopUpManager.alert("Your bid has been successfully submitted");
-
-      //
-      // Waiting for client to configure /api/Bid endpoint
-      //
-      //BidManager.postBid().then(function (value) {
-      //  // Configure if POST is successful
-      //}, function (error) {
-      //  // Handle error
-      //});
+      BidManager.postBid(bid).then(function (value) {
+        // Configure if POST is successful
+        PopUpManager.alert("Your bid has been successfully submitted");
+      }, function (error) {
+        // Handle error
+        console.log(error);
+      });
     }
   })
 
 
-  .controller('myJobsCtrl', function ($state, $scope, BidManager, PopUpManager) {
-
-    $scope.bidsList = [];
+  .controller('myJobsCtrl', function ($state, $scope, BidManager, PopUpManager, Loading) {
 
     $scope.initSearchCtrl = function () {
-      console.log("hello success");
 
-      if (BidManager.getBids().length == 0) {
-        $scope.bidsList = [{'description': "You currently have no bids"}];
-      } else {
-        $scope.bidsList = BidManager.getBids();
-      }
+      Loading.show();
+
+      BidManager.retrieveBids().then( function (value) {
+        $scope.bidList = value.data;
+        BidManager.setAllBids(value);
+        console.log($scope.bidList);
+      }, function (error) {
+        console.log(error);
+        $scope.bidList = [{'proposal': "You currently have no bids"}];
+      }).finally( function () {
+        Loading.hide();
+      });
     };
 
-    $scope.userProposals = function (item) {
+    $scope.viewProposal = function (item) {
 
-      BidManager.setBid(item);
-
-      if ($scope.bidsList[0].description == "You currently have no bids") {
+      if (item.proposal == "You currently have no bids") {
         PopUpManager.alert("You currently have no bids");
       } else {
+        BidManager.setBid(item);
         $state.go('tabsController.viewBid');
       }
     };
