@@ -109,10 +109,7 @@ angular.module('app.controllers', ['ngRoute'])
         "uniqueUrl": $scope.user.uniqueUrl,
         "aboutMe": $scope.user.aboutMe,
         "pictureUrl": $scope.user.pictureUrl,
-<<<<<<< HEAD
         "description": $scope.user.description,
-=======
->>>>>>> origin/master
         "averageRating": $scope.user.averageRating,
         "completedProjects": $scope.user.completedProjects,
         "isStudent": $scope.user.isStudent,
