@@ -93,11 +93,21 @@ angular.module('app.routes', [])
       })
 
       .state('tabsController.search2', {
-        url: '/searchPage',
+        url: '/searchPagePerName',
         views: {
           'tab2': {
             templateUrl: 'templates/Student/search2.html',
             controller: 'search2Ctrl'
+          }
+        }
+      })
+
+      .state('tabsController.search3', {
+        url: '/searchPagePerCategory',
+        views: {
+          'tab2': {
+            templateUrl: 'templates/Student/search3.html',
+            controller: 'search3Ctrl'
           }
         }
       })

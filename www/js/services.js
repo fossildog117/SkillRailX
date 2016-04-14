@@ -211,14 +211,21 @@ angular.module('app.services', ['ngResource'])
   })
 
   .service('SearchManager', function () {
-    var ID = 0;
-    var searchResult = "nothing";
+    var categoryID = 0;
+    var categoryTitle = "";
+    var searchResult = "";
     return {
-      getID: function () {
-        return ID;
+      getCategoryID: function () {
+        return categoryID;
       },
-      setID: function (value) {
-        ID = value;
+      setCategoryID: function (value) {
+        categoryID = value;
+      },
+      getCategoryTitle: function () {
+        return categoryTitle;
+      },
+      setCategoryTitle: function (value) {
+        categoryTitle = value;
       },
       getSearchResult: function() {
         return searchResult;
