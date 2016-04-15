@@ -138,6 +138,7 @@ angular.module('app.controllers', ['ngRoute'])
 
 
   .controller('homeCtrl', function ($scope, $rootScope, PublicProjects, $state, JobManager, Loading) {
+<<<<<<< HEAD
 
     Loading.show();
     PublicProjects.getPublicProjects().then(function (value) {
@@ -165,6 +166,20 @@ angular.module('app.controllers', ['ngRoute'])
 
     $rootScope.jobSelected = function (listing) {
 
+=======
+
+    Loading.show();
+    PublicProjects.getPublicProjects().then(function (value) {
+      $scope.items = value.data.items;
+      console.log(value.data.items);
+    }, function (error) {
+      console.log(error);
+    }).finally(function () {
+      Loading.hide();
+    })
+
+    $rootScope.jobSelected = function (listing) {
+>>>>>>> origin/master
       JobManager.setTempJob(listing);
       $state.go('tabsController.publicJobs');
 
@@ -293,10 +308,17 @@ angular.module('app.controllers', ['ngRoute'])
       SearchManager.setSearchResult(searchFor);
       $state.go("tabsController.search2");
     }
+<<<<<<< HEAD
 
   })
 
 
+=======
+
+  })
+
+
+>>>>>>> origin/master
   .controller('search2Ctrl', function ($rootScope, $state, $scope, JobManager, SearchManager, PublicProjects, Loading) {
 
     Loading.show();

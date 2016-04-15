@@ -248,6 +248,7 @@ angular.module('app.services', ['ngResource'])
     return {
       getCategoryID: function () {
         return categoryID;
+<<<<<<< HEAD
       },
       setCategoryID: function (value) {
         categoryID = value;
@@ -255,6 +256,15 @@ angular.module('app.services', ['ngResource'])
       getCategoryTitle: function () {
         return categoryTitle;
       },
+=======
+      },
+      setCategoryID: function (value) {
+        categoryID = value;
+      },
+      getCategoryTitle: function () {
+        return categoryTitle;
+      },
+>>>>>>> origin/master
       setCategoryTitle: function (value) {
         categoryTitle = value;
       },
