@@ -5,14 +5,13 @@
         <i class="icon ion-ios-search placeholder-icon"></i>
         <input ng-model="this.searchResult" type="search" placeholder="Search for Jobs">
       </label>
-      <button ng-click="openCategory(0,this.searchResult)" ui-sref="tabsController.search2" class="button button-clear">
+      <button ng-click="openSearchResult(this.searchResult)" class="button button-clear">
         Submit
       </button>
     </div>
     <ion-item class="item-divider item-calm">Categories</ion-item>
     <ion-list>
-      <ion-item class="item-icon-right" ng-repeat="category in categories.data" ng-click="openCategory(category)"
-                ui-sref="tabsController.search2">
+      <ion-item class="item-icon-right" ng-repeat="category in categories.data" ng-click="openCategory(this.category.id, this.category.title)">
         <div>{{category.title}}</div>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>

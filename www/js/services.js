@@ -109,10 +109,6 @@ angular.module('app.services', ['ngResource'])
         profileDetails = value;
       },
 
-      getInterests: function () {
-        return interests;
-      },
-
       setInterests: function (value) {
         interests = value;
       }
@@ -121,6 +117,7 @@ angular.module('app.services', ['ngResource'])
 
   .service('BidManager', function ($http, Token) {
 
+    var viewableBids = [];
     var allBids = [];
     var bid = {};
 
@@ -145,11 +142,24 @@ angular.module('app.services', ['ngResource'])
           }
         })
       },
-      setAllBids: function (bids) {
-        allBids = bid;
+      increment: function () {
+        viewableBids = viewableBids.concat(allBids.slice(viewableBids.length, viewableBids.length + 10));
+        if (viewableBids.length == allBids.length) {
+          document.getElementById('viewableBids').style.visibility = 'hidden';
+        }
       },
-      getAllBids: function () {
-        return allBids;
+      getViewableBids: function () {
+        return viewableBids;
+      },
+      setViewableBids: function () {
+        if (allBids.length < 10) {
+          viewableBids = allBids.slice(0,allBids.length);
+        } else {
+          viewableBids = allBids.slice(0, 10);
+        }
+      },
+      setAllBids: function (bids) {
+        allBids = bids;
       },
       setBid: function (newBid) {
         bid = newBid;
@@ -162,6 +172,8 @@ angular.module('app.services', ['ngResource'])
 
   .service('JobManager', function () {
 
+    var allJobs = [];
+    var viewAbleJobs = [];
     var tempJob = {};
 
     return {
@@ -175,11 +187,30 @@ angular.module('app.services', ['ngResource'])
           data: bid
         })
       },
+      increment: function () {
+        viewAbleJobs = viewAbleJobs.concat(allJobs.slice(viewAbleJobs.length, viewAbleJobs.length + 10));
+        if (viewAbleJobs.length == allJobs.length) {
+          document.getElementById('viewableJobs').style.visibility = 'hidden';
+        }
+      },
+      getViewableJobs: function () {
+        return viewAbleJobs;
+      },
+      setViewableJobs: function () {
+        if (allJobs.length < 10) {
+          viewAbleJobs = allJobs.slice(0,allJobs.length);
+        } else {
+          viewAbleJobs = allJobs.slice(0, 10);
+        }
+      },
       getTempJob: function () {
         return tempJob;
       },
       setTempJob: function (jobListing) {
         tempJob = jobListing;
+      },
+      setAllJobs: function (data) {
+        allJobs = data;
       }
     }
   })
@@ -211,14 +242,21 @@ angular.module('app.services', ['ngResource'])
   })
 
   .service('SearchManager', function () {
-    var ID = 0;
-    var searchResult = "nothing";
+    var categoryID = 0;
+    var categoryTitle = "";
+    var searchResult = "";
     return {
-      getID: function () {
-        return ID;
+      getCategoryID: function () {
+        return categoryID;
       },
-      setID: function (value) {
-        ID = value;
+      setCategoryID: function (value) {
+        categoryID = value;
+      },
+      getCategoryTitle: function () {
+        return categoryTitle;
+      },
+      setCategoryTitle: function (value) {
+        categoryTitle = value;
       },
       getSearchResult: function() {
         return searchResult;

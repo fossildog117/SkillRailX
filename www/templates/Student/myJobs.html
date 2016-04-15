@@ -7,7 +7,7 @@
     <ion-item ng-repeat="item in this.bidList" ng-click="viewProposal(item)">
       {{item.project.title}}
     </ion-item>
-    <div class="spacer" style="height: 40px;"></div>
+    <ion-item id="viewableBids" class="button button-calm button-block" ng-click="showMore()">Show more</ion-item>
     <ion-item class="item-divider item-calm">Your Jobs</ion-item>
     <ion-item ng-click="userJobs()"> Job number one </ion-item>
     <div class="spacer calm" style="height: 10px;"></div>

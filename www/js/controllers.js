@@ -11,7 +11,7 @@ angular.module('app.controllers', ['ngRoute'])
     }
 
     $scope.initProfileCtrl = function () {
-      Loading.show()
+      Loading.show();
       ProfileManager.loadProfile(Token.getProperty()).then(function (response) {
 
         console.log(response.data);
@@ -49,38 +49,29 @@ angular.module('app.controllers', ['ngRoute'])
 
   .controller('editProfileCtrl', function ($state, $route, $scope, $rootScope, PopUpManager, ProfileManager, Token, CategoriesGET) {
 
-    $scope.initEditProfileCtrl = function () {
+    $scope.user = ProfileManager.getProfileDetails();
+    $scope.temp = $scope.user;
 
-      $scope.user = ProfileManager.getProfileDetails();
-      $scope.temp = $scope.user;
-
-      interestStatusChecker = function (title) {
-        for (var itemNum = 0; itemNum < $scope.user.interests.length; itemNum++) {
-          if ($scope.user.interests[itemNum].title == title) {
-            return true;
-          }
+    interestStatusChecker = function (title) {
+      for (var itemNum = 0; itemNum < $scope.user.interests.length; itemNum++) {
+        if ($scope.user.interests[itemNum].title == title) {
+          return true;
         }
-        return false;
-      };
-
-      $scope.interests = [
-        {title: "Content Creation", group: "Copywriting", id: 1, checked: interestStatusChecker("Content Creation")},
-        {title: "Proofreading", group: "Copywriting", id: 2, checked: interestStatusChecker("Proofreading")},
-        {title: "Video Editing", group: "Media", id: 3, checked: interestStatusChecker("Video Editing")},
-        {title: "Graphic Design", group: "Design", id: 4, checked: interestStatusChecker("Graphic Design")},
-        {title: "Translation", group: "Copywriting", id: 5, checked: interestStatusChecker("Translation")},
-        {title: "Videography", group: "Media", id: 6, checked: interestStatusChecker("Videography")},
-        {title: "Web Analytics", group: "Techies", id: 7, checked: interestStatusChecker("Web Analytics")},
-        {
-          title: "Social Media Marketing",
-          group: "Techies",
-          id: 8,
-          checked: interestStatusChecker("Social Media Marketing")
-        },
-        {title: "SEO", group: "Techies", id: 9, checked: interestStatusChecker("SEO")}
-      ];
-
+      }
+      return false;
     };
+
+    $scope.interests = [
+      {title: "Content Creation", group: "Copywriting", id: 1, checked: interestStatusChecker("Content Creation")},
+      {title: "Proofreading", group: "Copywriting", id: 2, checked: interestStatusChecker("Proofreading")},
+      {title: "Video Editing", group: "Media", id: 3, checked: interestStatusChecker("Video Editing")},
+      {title: "Graphic Design", group: "Design", id: 4, checked: interestStatusChecker("Graphic Design")},
+      {title: "Translation", group: "Copywriting", id: 5, checked: interestStatusChecker("Translation")},
+      {title: "Videography", group: "Media", id: 6, checked: interestStatusChecker("Videography")},
+      {title: "Web Analytics", group: "Techies", id: 7, checked: interestStatusChecker("Web Analytics")},
+      {title: "Social Media Marketing", group: "Techies",id: 8, checked: interestStatusChecker("Social Media Marketing")},
+      {title: "SEO", group: "Techies", id: 9, checked: interestStatusChecker("SEO")}
+    ];
 
     $scope.categories = CategoriesGET.getCategories();
 
@@ -143,33 +134,42 @@ angular.module('app.controllers', ['ngRoute'])
       })
     };
 
-    $scope.initEditProfileCtrl();
-
   })
 
 
-  .controller('homeCtrl', function ($scope, PublicProjects, $state, JobManager, Loading) {
+  .controller('homeCtrl', function ($scope, $rootScope, PublicProjects, $state, JobManager, Loading) {
 
-    $scope.initHome = function () {
+    Loading.show();
+    PublicProjects.getPublicProjects().then(function (value) {
 
-      Loading.show();
+      JobManager.setAllJobs(value.data.items);
+      JobManager.setViewableJobs();
+      $scope.items = JobManager.getViewableJobs();
 
-      PublicProjects.getPublicProjects().then(function (value) {
-        $scope.items = value.data.items;
-        console.log(value.data.items);
-      }, function (error) {
-        console.log(error);
-      }).finally(function () {
-        Loading.hide();
-      })
+    }, function (error) {
+
+      console.log(error);
+
+    }).finally(function () {
+
+      Loading.hide();
+
+    });
+
+    $scope.showMoreJobs = function () {
+
+      JobManager.increment();
+      $scope.items = JobManager.getViewableJobs();
+
     };
 
-    $scope.jobSelected = function (listing) {
+    $rootScope.jobSelected = function (listing) {
+
       JobManager.setTempJob(listing);
       $state.go('tabsController.publicJobs');
+
     };
 
-    $scope.initHome();
   })
 
 
@@ -225,15 +225,21 @@ angular.module('app.controllers', ['ngRoute'])
       Loading.show();
 
       BidManager.retrieveBids().then( function (value) {
-        $scope.bidList = value.data;
-        BidManager.setAllBids(value);
-        console.log($scope.bidList);
+        BidManager.setAllBids(value.data);
+        console.log(value.data);
+        BidManager.setViewableBids();
+        $scope.bidList = BidManager.getViewableBids();
       }, function (error) {
         console.log(error);
         $scope.bidList = [{'proposal': "You currently have no bids"}];
       }).finally( function () {
         Loading.hide();
       });
+    };
+
+    $scope.showMore = function () {
+      BidManager.increment();
+      $scope.bidList = BidManager.getViewableBids();
     };
 
     $scope.viewProposal = function (item) {
@@ -266,76 +272,63 @@ angular.module('app.controllers', ['ngRoute'])
 
   .controller('searchCtrl', function ($scope, $state, SearchManager, CategoriesGET, Loading) {
 
-    $scope.openCategory = function (categoryID, searchFor) {
-
-      SearchManager.setID(categoryID);
-      SearchManager.setSearchResult(searchFor);
-
-    };
-
-    $scope.initSearchCtrl = function () {
-
-      Loading.show();
-
-      CategoriesGET.getCategories().then(function (value) {
-        $scope.categories = value;
-        $scope.searchResult = "";
-        console.log($scope.categories);
-      }, function (error) {
+    Loading.show();
+    CategoriesGET.getCategories().then(function (value) {
+      $scope.categories = value;
+      $scope.searchResult = "";
+    }, function (error) {
         console.log("An error has occured");
-      }).finally(function () {
+    }).finally(function () {
         Loading.hide();
-      });
+    });
 
+
+    $scope.openCategory = function (categoryID, categoryTitle) {
+      SearchManager.setCategoryID(categoryID);
+      SearchManager.setCategoryTitle(categoryTitle);
+      $state.go("tabsController.search3");
     };
 
-    $scope.initSearchCtrl();
+    $scope.openSearchResult = function (searchFor) {
+      SearchManager.setSearchResult(searchFor);
+      $state.go("tabsController.search2");
+    }
 
   })
 
 
-  .controller('search2Ctrl', function ($state, $scope, JobManager, SearchManager, PublicProjects) {
+  .controller('search2Ctrl', function ($rootScope, $state, $scope, JobManager, SearchManager, PublicProjects, Loading) {
 
-    var checker = function (object) {
-      if (object == 0) {
-        return {title: "Results"};
-      } else {
-        return object;
-      }
-    };
-
-    $scope.category = checker(SearchManager.getID());
-
+    Loading.show();
     PublicProjects.getPublicProjects().then(function (value) {
-
       $scope.items = value.data.items;
-      $scope.searchResult = SearchManager.getSearchResult();
-      console.log($scope.searchResult);
-
-      console.log(value.data.items);
-    }, function (error) {
-      console.log(error);
+      }, function (error) {
+        console.log(error);
+    }).finally( function () {
+        Loading.hide();
     });
 
-    $scope.jobSelected = function (listing) {
-      JobManager.setTempJob(listing);
-      $state.go('tabsController.publicJobs');
-    };
-
     $scope.filterBySearchResult = function () {
-      return $scope.searchResult;
+      return SearchManager.getSearchResult();
     };
 
-    $scope.filterByCategory = function () {
-      if ($scope.category.title == "Results") {
-        return {
-          title: "",
-          group: "",
-          description: ""
-        };
-      } else {
-        return $scope.category;
-      }
+  })
+
+
+  .controller('search3Ctrl', function($rootScope, $state, $scope, JobManager, SearchManager, PublicProjects, Loading) {
+
+    Loading.show();
+    $scope.categoryTitle= SearchManager.getCategoryTitle();
+    PublicProjects.getPublicProjects().then(function (value) {
+      $scope.items = value.data.items;
+      }, function (error) {
+        console.log(error);
+    }).finally( function () {
+      Loading.hide();
+    });
+
+    $scope.filterByCategoryTitle = function () {
+      return { id : SearchManager.getCategoryID() } ;
     }
 
   })
