@@ -3,14 +3,14 @@
     <div class="list card">
       <div class="item">
         <h2>{{this.viewedListing.title}}</h2>
-        <p>Budget: £{{this.viewedListing.budget}}</p>
-        <p>Deadline: {{this.viewedListing.deadline}}</p>
       </div>
       <div class="item item-body">
+        <p>Budget: £{{this.viewedListing.budget}}</p>
+        <p>Deadline: {{this.viewedListing.deadline}}</p>
+        <button class="button button-calm button-block" class="subdued" ng-click="newBid()">Apply Now</button>
         <h3>Description</h3>
         <p>{{this.viewedListing.projectBrief}}</p>
       </div>
     </div>
-    <button class="button button-calm button-block"  class="subdued" ng-click="newBid()">Submit Proposal</button>
   </ion-content>
 </ion-view>
