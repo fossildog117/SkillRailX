@@ -52,29 +52,26 @@ angular.module('app.controllers', ['ngRoute'])
     Loading.show();
     $scope.user = ProfileManager.getProfileDetails();
     $scope.temp = $scope.user;
-    CategoriesGET.getCategories().then(function (value) {
-      
-      $scope.categories = value.data;
 
-      var interestStatusChecker = function (title) {
-        for (var itemNum = 0; itemNum < $scope.user.interests.length; itemNum++) {
-          if ($scope.user.interests[itemNum].title == title) {
-            return true;
-          }
+    CategoriesGET.getCategories().then(function(value) {
+    $scope.categories = value.data;
+    var interestStatusChecker = function (title) {
+      for (var itemNum = 0; itemNum < $scope.user.interests.length; itemNum++) {
+        if ($scope.user.interests[itemNum].title == title) {
+          return true;
         }
-        return false;
-      };
+      }
+      return false;
+    };
 
-      var interestsGetter = function() {
-        var tempInterests = [];
-        for(var temp = 0; temp < $scope.categories.length; temp++) {
-          tempInterests[temp] = { title : $scope.categories[temp].title, group: $scope.categories[temp].group, description: $scope.categories[temp].description, iconurl: $scope.categories[temp].iconurl , id: $scope.categories[temp].id, checked: interestStatusChecker($scope.categories[temp].title)};
-        }
-        return tempInterests;
-      };
-
-      $scope.interests = interestsGetter();
-
+    var interestsGetter = function() {
+      var tempInterests = [];
+      for(var temp = 0; temp < $scope.categories.length; temp++) {
+        tempInterests[temp] = { title : $scope.categories[temp].title, group: $scope.categories[temp].group, description: $scope.categories[temp].description, iconUrl: $scope.categories[temp].iconUrl , id: $scope.categories[temp].id, checked: interestStatusChecker($scope.categories[temp].title)};
+      }
+      return tempInterests;
+    };
+    $scope.interests = interestsGetter();
     }, function (error) {
         console.log("An error has occured");
     }).finally(function () {
@@ -83,65 +80,57 @@ angular.module('app.controllers', ['ngRoute'])
 
     $scope.saveProfileSettings = function () {
 
-      /************Interest Edit******************/
-      $scope.newInterests = [];
-      var counter = 0;
-      console.log($scope.interests.length);
-      for (var itemNum = 0; itemNum < $scope.interests.length; itemNum++) {
-        if ($scope.interests[itemNum].checked) {
-          $scope.newInterests[counter] = {
-            "title": $scope.interests[itemNum].title,
-            "group": $scope.interests[itemNum].group,
-            "description": $scope.interests[itemNum].description,
-            "iconurl": $scope.interests[itemNum].iconurl,
-            "id": $scope.interests[itemNum].id
-          };
-          counter++;
-        }
+    /************Interest Edit******************/
+    $scope.newInterests = [];
+    var counter = 0;
+    for (var itemNum = 0; itemNum < $scope.interests.length; itemNum++) {
+      if ($scope.interests[itemNum].checked) {
+        $scope.newInterests[counter] = {
+          "title": $scope.interests[itemNum].title,
+          "group": $scope.interests[itemNum].group,
+          "description": $scope.interests[itemNum].description,
+          "iconUrl": $scope.interests[itemNum].iconUrl,
+          "id": $scope.interests[itemNum].id
+        };
+        counter++;
       }
-      console.log($scope.newInterests);
+    }
 
-      var newSettings = {
-        "firstName": $scope.user.firstName,
-        "lastName": $scope.user.lastName,
-        "title": $scope.user.title,
-        "uniqueUrl": $scope.user.uniqueUrl,
-        "aboutMe": $scope.user.aboutMe,
-        "pictureUrl": $scope.user.pictureUrl,
-        "description": $scope.user.description,
-        "averageRating": $scope.user.averageRating,
-        "completedProjects": $scope.user.completedProjects,
-        "isStudent": $scope.user.isStudent,
-        "studentEmail": $scope.user.studentEmail,
-        "companyName": $scope.user.companyName,
-        "interests":$scope.newInterests,
-        "isActive": $scope.user.isActive,
-        "skills": $scope.user.skills,
-        "ongoingProjects": $scope.user.ongoingProjects,
-        "completeProjects": $scope.user.completeProjects,
-        "failedProjects": $scope.user.failedProjects,
-        "currentUniversity": $scope.user.currentUniversity,
-        "currentCourse": $scope.user.currentCourse,
-        "graduationYear": $scope.user.graduationYear,
-        "location": $scope.user.location,
-        "id": $scope.user.id
-      };
-
-      ProfileManager.editProfile(newSettings, Token.getProperty()).then(function (response) {
-        console.log(response.data);
-        ProfileManager.setProfileDetails(response.data);
-        ProfileManager.setInterests($scope.newInterests);
-
-        $rootScope.$emit('saveSuccess', newSettings);
-
-        PopUpManager.alert('Your settings have been successfully saved');
-
-      }, function (response) {
-        ProfileManager.setProfileDetails(newSettings);
-        console.log(response)
-      })
+    var newSettings = {
+      "firstName": $scope.user.firstName,
+      "lastName": $scope.user.lastName,
+      "title": $scope.user.title,
+      "uniqueUrl": $scope.user.uniqueUrl,
+      "aboutMe": $scope.user.aboutMe,
+      "pictureUrl": $scope.user.pictureUrl,
+      "description": $scope.user.description,
+      "averageRating": $scope.user.averageRating,
+      "completedProjects": $scope.user.completedProjects,
+      "isStudent": $scope.user.isStudent,
+      "studentEmail": $scope.user.studentEmail,
+      "companyName": $scope.user.companyName,
+      "interests":$scope.newInterests,
+      "isActive": $scope.user.isActive,
+      "skills": $scope.user.skills,
+      "ongoingProjects": $scope.user.ongoingProjects,
+      "completeProjects": $scope.user.completeProjects,
+      "failedProjects": $scope.user.failedProjects,
+      "currentUniversity": $scope.user.currentUniversity,
+      "currentCourse": $scope.user.currentCourse,
+      "graduationYear": $scope.user.graduationYear,
+      "location": $scope.user.location,
+      "id": $scope.user.id
     };
 
+    ProfileManager.editProfile(newSettings, Token.getProperty()).then(function (response) {
+      ProfileManager.setProfileDetails(response.data);
+      ProfileManager.setInterests($scope.newInterests);
+      $rootScope.$emit('saveSuccess', newSettings);
+      PopUpManager.alert('Your settings have been successfully saved');
+    }, function (response) {
+      ProfileManager.setProfileDetails(newSettings);
+    })
+   };
   })
 
 

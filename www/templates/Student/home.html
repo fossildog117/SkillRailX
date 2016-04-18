@@ -6,10 +6,10 @@
     <ion-list>
       <ion-item class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="item in this.items"
                 type="item-text-wrap" ng-click="jobSelected(item)">
-        <img ng-src="{{item.projectOwner['picture']}}">
+        <img ng-src="{{item.categories[0].iconUrl}}">
         <div class="job-title">{{item.title}}</div>
         <div style="font-size: 0.69em" class="item-text-wrap job-owner">{{item.projectOwner.displayName}}</div>
-        <div style="font-size: 0.69em" class="item-text-wrap job-description">Budget: {{item.budget}}</div>
+        <div style="font-size: 0.69em" class="item-text-wrap job-description">Potential Learnings: £{{item.budget}}</div>
         <i class="icon ion-chevron-right icon-accessory"></i>
         <ion-option-button class="button-energized" ng-click="like(item)"><i class="icon ion-heart"></i>
         </ion-option-button>
