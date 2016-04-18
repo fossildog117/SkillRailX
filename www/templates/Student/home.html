@@ -1,4 +1,4 @@
-<ion-view title="Home" id="page3">
+<ion-view title="Minternships" id="page3">
   <ion-nav-buttons side="right">
     <a class="button button-icon icon ion-ios-search-strong" ui-sref="tabsController.search"></a>
   </ion-nav-buttons>
@@ -6,7 +6,7 @@
     <ion-list>
       <ion-item class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="item in this.items"
                 type="item-text-wrap" ng-click="jobSelected(item)">
-        <img ng-src="{{item.categories[0].iconUrl}}">
+        <img ng-src="{{iconFilter(item.categories[0].iconUrl)}}">
         <div class="job-title">{{item.title}}</div>
         <div style="font-size: 0.69em" class="item-text-wrap job-owner">{{item.projectOwner.displayName}}</div>
         <div style="font-size: 0.69em" class="item-text-wrap job-description">Potential Learnings: £{{item.budget}}</div>

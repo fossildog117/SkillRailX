@@ -244,6 +244,7 @@ angular.module('app.services', ['ngResource'])
   .service('SearchManager', function () {
     var categoryID = 0;
     var categoryTitle = "";
+    var categoryIconUrl = "";
     var searchResult = "";
     return {
       getCategoryID: function () {
@@ -257,6 +258,12 @@ angular.module('app.services', ['ngResource'])
       },
       setCategoryTitle: function (value) {
         categoryTitle = value;
+      },
+      getCategoryIconUrl: function () {
+        return categoryIconUrl;
+      },
+      setCategoryIconUrl: function (value) {
+        categoryIconUrl = value;
       },
       getSearchResult: function() {
         return searchResult;

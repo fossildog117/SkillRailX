@@ -9,10 +9,10 @@
         Submit
       </button>
     </div>
-    <ion-item class="item-divider item-calm">Categories</ion-item>
     <ion-list>
-      <ion-item class="item-icon-right" ng-repeat="category in categories.data" ng-click="openCategory(this.category.id, this.category.title)">
-        <div>{{category.title}}</div>
+      <ion-item class="item-icon-right item-avatar" ng-repeat="category in categories.data" ng-click="openCategory(this.category.id, this.category.title, this.category.iconUrl)">
+        <img ng-src="{{category.iconUrl}}">
+        <div class="search-text">{{category.title}}</div>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
     </ion-list>

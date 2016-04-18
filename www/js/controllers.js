@@ -143,6 +143,14 @@ angular.module('app.controllers', ['ngRoute'])
       JobManager.setViewableJobs();
       $scope.items = JobManager.getViewableJobs();
 
+      $scope.iconFilter = function(imageUrl) {
+        if (imageUrl == "http://www.tomharrisonnorthseachallenge.com/widget/image/placeholder.png" || imageUrl == undefined) {
+          return "https://skillrail4photos.blob.core.windows.net/websiteicons/icon-placeholder.png";
+        } else {
+          return imageUrl;
+        }
+      };
+
     }, function (error) {
 
       console.log(error);
@@ -293,9 +301,10 @@ angular.module('app.controllers', ['ngRoute'])
         Loading.hide();
     });
 
-    $scope.openCategory = function (categoryID, categoryTitle) {
+    $scope.openCategory = function (categoryID, categoryTitle, categoryIconUrl) {
       SearchManager.setCategoryID(categoryID);
       SearchManager.setCategoryTitle(categoryTitle);
+      SearchManager.setCategoryIconUrl(categoryIconUrl);
       $state.go("tabsController.search3");
     };
 
@@ -310,6 +319,14 @@ angular.module('app.controllers', ['ngRoute'])
     Loading.show();
     PublicProjects.getPublicProjects().then(function (value) {
       $scope.items = value.data.items;
+      $scope.iconFilter = function(imageUrl) {
+        if (imageUrl == "http://www.tomharrisonnorthseachallenge.com/widget/image/placeholder.png" || imageUrl == undefined) {
+          return "https://skillrail4photos.blob.core.windows.net/websiteicons/icon-placeholder.png";
+        } else {
+          return imageUrl;
+        }
+      };
+
       }, function (error) {
         console.log(error);
     }).finally( function () {
@@ -327,6 +344,7 @@ angular.module('app.controllers', ['ngRoute'])
 
     Loading.show();
     $scope.categoryTitle= SearchManager.getCategoryTitle();
+    $scope.jobsIcon = SearchManager.getCategoryIconUrl();
     PublicProjects.getPublicProjects().then(function (value) {
       $scope.items = value.data.items;
       }, function (error) {
