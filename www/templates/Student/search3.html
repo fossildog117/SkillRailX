@@ -1,7 +1,7 @@
 <ion-view title="{{categoryTitle}}">
     <ion-content overflow-scroll="true" padding="true" class="has-header">
       <ion-list>
-        <ion-item class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="item in items | filter: { categories: filterByCategoryTitle() } as results" type="item-text-wrap" ng-click="jobSelected(item)">
+        <ion-item class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="item in items | filter: { categories: filterByCategoryTitle() }:true as results" type="item-text-wrap" ng-click="jobSelected(item)">
           <img ng-src="{{item.projectOwner['picture']}}">
           <div class="job-title">{{item.title}}</div>
           <div style="font-size: 0.69em" class="item-text-wrap job-owner">{{item.projectOwner.displayName}}</div>

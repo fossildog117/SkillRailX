@@ -47,33 +47,39 @@ angular.module('app.controllers', ['ngRoute'])
   })
 
 
-  .controller('editProfileCtrl', function ($state, $route, $scope, $rootScope, PopUpManager, ProfileManager, Token, CategoriesGET) {
+  .controller('editProfileCtrl', function ($state, $rootScope, $route, $scope, PopUpManager, ProfileManager, Token, Loading, CategoriesGET) {
 
+    Loading.show();
     $scope.user = ProfileManager.getProfileDetails();
     $scope.temp = $scope.user;
+    CategoriesGET.getCategories().then(function (value) {
+      
+      $scope.categories = value.data;
 
-    interestStatusChecker = function (title) {
-      for (var itemNum = 0; itemNum < $scope.user.interests.length; itemNum++) {
-        if ($scope.user.interests[itemNum].title == title) {
-          return true;
+      var interestStatusChecker = function (title) {
+        for (var itemNum = 0; itemNum < $scope.user.interests.length; itemNum++) {
+          if ($scope.user.interests[itemNum].title == title) {
+            return true;
+          }
         }
-      }
-      return false;
-    };
+        return false;
+      };
 
-    $scope.interests = [
-      {title: "Content Creation", group: "Copywriting", id: 1, checked: interestStatusChecker("Content Creation")},
-      {title: "Proofreading", group: "Copywriting", id: 2, checked: interestStatusChecker("Proofreading")},
-      {title: "Video Editing", group: "Media", id: 3, checked: interestStatusChecker("Video Editing")},
-      {title: "Graphic Design", group: "Design", id: 4, checked: interestStatusChecker("Graphic Design")},
-      {title: "Translation", group: "Copywriting", id: 5, checked: interestStatusChecker("Translation")},
-      {title: "Videography", group: "Media", id: 6, checked: interestStatusChecker("Videography")},
-      {title: "Web Analytics", group: "Techies", id: 7, checked: interestStatusChecker("Web Analytics")},
-      {title: "Social Media Marketing", group: "Techies",id: 8, checked: interestStatusChecker("Social Media Marketing")},
-      {title: "SEO", group: "Techies", id: 9, checked: interestStatusChecker("SEO")}
-    ];
+      var interestsGetter = function() {
+        var tempInterests = [];
+        for(var temp = 0; temp < $scope.categories.length; temp++) {
+          tempInterests[temp] = { title : $scope.categories[temp].title, group: $scope.categories[temp].group, description: $scope.categories[temp].description, iconurl: $scope.categories[temp].iconurl , id: $scope.categories[temp].id, checked: interestStatusChecker($scope.categories[temp].title)};
+        }
+        return tempInterests;
+      };
 
-    $scope.categories = CategoriesGET.getCategories();
+      $scope.interests = interestsGetter();
+
+    }, function (error) {
+        console.log("An error has occured");
+    }).finally(function () {
+        Loading.hide();
+    });
 
     $scope.saveProfileSettings = function () {
 
@@ -86,12 +92,14 @@ angular.module('app.controllers', ['ngRoute'])
           $scope.newInterests[counter] = {
             "title": $scope.interests[itemNum].title,
             "group": $scope.interests[itemNum].group,
-            "description": "TBC",
+            "description": $scope.interests[itemNum].description,
+            "iconurl": $scope.interests[itemNum].iconurl,
             "id": $scope.interests[itemNum].id
           };
           counter++;
         }
       }
+      console.log($scope.newInterests);
 
       var newSettings = {
         "firstName": $scope.user.firstName,
@@ -288,14 +296,13 @@ angular.module('app.controllers', ['ngRoute'])
 
     Loading.show();
     CategoriesGET.getCategories().then(function (value) {
-      $scope.categories = value;
-      $scope.searchResult = "";
+    $scope.searchResult= "";
+    $scope.categories = value;
     }, function (error) {
         console.log("An error has occured");
     }).finally(function () {
         Loading.hide();
     });
-
 
     $scope.openCategory = function (categoryID, categoryTitle) {
       SearchManager.setCategoryID(categoryID);
