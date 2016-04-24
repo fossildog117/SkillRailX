@@ -9,7 +9,9 @@
     </ion-item>
     <ion-item id="viewableBids" class="button button-calm button-block" ng-click="showMore()">Show more</ion-item>
     <ion-item class="item-divider item-calm">Your Jobs</ion-item>
-    <ion-item ng-click="userJobs()"> Job number one </ion-item>
+    <ion-item ng-repeat="activeProject in this.activeProjects " ng-click="openActiveProject(activeProject)">
+       {{this.activeProject.title}} (status: {{this.activeProject.status.label}})
+     </ion-item>
     <div class="spacer calm" style="height: 10px;"></div>
   </ion-content>
 </ion-view>

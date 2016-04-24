@@ -120,6 +120,7 @@ angular.module('app.services', ['ngResource'])
     var viewableBids = [];
     var allBids = [];
     var bid = {};
+    var ActiveProject = {};
 
     return {
       postBid: function (bid) {
@@ -166,6 +167,21 @@ angular.module('app.services', ['ngResource'])
       },
       getBid: function () {
         return bid;
+      },
+      setActiveProject: function (value) {
+        ActiveProject = value;
+      },
+      getActiveProject: function () {
+        return ActiveProject;
+      },
+      getActiveProjects: function () {
+        return $http({
+          method: 'GET',
+          url: url + '/api/Bid/ActiveProjects',
+          headers: {
+            'Authorization' : 'Bearer ' + Token.getProperty()
+          }
+        })
       }
     }
   })

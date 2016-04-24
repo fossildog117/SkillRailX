@@ -212,12 +212,13 @@ angular.module('app.controllers', ['ngRoute'])
 
   .controller('createBidCtrl', function ($scope, JobManager, BidManager, PopUpManager) {
 
-    // currently configuring bids
+    $scope.viewedListing = JobManager.getTempJob();
+
     $scope.postBid = function () {
 
       var bid = {
         // Configure Bid
-        "offer": this.newBid,
+        "offer": JobManager.getTempJob().budget,
         "project": {
           "id": JobManager.getTempJob().id
         },
@@ -239,6 +240,9 @@ angular.module('app.controllers', ['ngRoute'])
 
   .controller('myJobsCtrl', function ($state, $scope, BidManager, PopUpManager, Loading) {
 
+
+    //--------------------Sent Bids/ Proposals-----------------
+
     $scope.initSearchCtrl = function () {
 
       Loading.show();
@@ -251,9 +255,17 @@ angular.module('app.controllers', ['ngRoute'])
       }, function (error) {
         console.log(error);
         $scope.bidList = [{'proposal': "You currently have no bids"}];
-      }).finally( function () {
-        Loading.hide();
-      });
+      }).finally(function () {
+          Loading.hide();
+     });
+
+
+      BidManager.getActiveProjects().then( function(value) {
+        $scope.activeProjects = value.data;
+      }, function(error) {
+        PopUpManager.alert("Problem with loading your active Jobs");
+      })
+
     };
 
     $scope.showMore = function () {
@@ -272,6 +284,17 @@ angular.module('app.controllers', ['ngRoute'])
     };
 
     $scope.initSearchCtrl();
+
+    //----------------------ActiveProjects------------------
+
+    $scope.openActiveProject = function(item) {
+      BidManager.setActiveProject(item);
+      console.log(item);
+      console.log(BidManager.getActiveProject());
+    }
+
+    //------------------------Liked Jobs--------------------
+
   })
 
   .controller('viewBidCtrl', function ($state, $scope, BidManager) {
