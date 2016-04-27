@@ -56,12 +56,16 @@ angular.module('app.controllers', ['ngRoute'])
     CategoriesGET.getCategories().then(function(value) {
     $scope.categories = value.data;
     var interestStatusChecker = function (title) {
+      if ($scope.user.interests == null) {
+        return false;
+      } else {
       for (var itemNum = 0; itemNum < $scope.user.interests.length; itemNum++) {
         if ($scope.user.interests[itemNum].title == title) {
           return true;
         }
       }
       return false;
+    }
     };
 
     var interestsGetter = function() {
@@ -427,7 +431,7 @@ angular.module('app.controllers', ['ngRoute'])
     };
   })
 
-  .controller('signupCtrl', function ($scope, $exceptionHandler, PopUpManager, SignUp, Login) {
+  .controller('signupCtrl', function ($scope, $exceptionHandler, PopUpManager, $state, SignUp, Login) {
 
     $scope.initSignupCtrl = function () {
       console.log("hello");
@@ -446,6 +450,7 @@ angular.module('app.controllers', ['ngRoute'])
               "lastName": $scope.postData.lastName,
               "phoneNumber": $scope.postData.phoneNumber,
               "isStudent": true,
+              "interests": null,
               "studentEmail": $scope.postData.email,
               "companyName": ""
             };
@@ -458,7 +463,8 @@ angular.module('app.controllers', ['ngRoute'])
 
             SignUp.attemptToRegister(newUser).then(function () {
 
-              Login.login(user);
+              SignUp.login(user);
+              $state.go('editProfile');
 
             }, function (error) {
 

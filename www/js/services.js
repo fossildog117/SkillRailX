@@ -43,7 +43,7 @@ angular.module('app.services', ['ngResource'])
     }
   })
 
-  .factory('SignUp', function ($http) {
+  .factory('SignUp', function ($http, $httpParamSerializerJQLike, $state, PopUpManager, Token, ProfileManager, Loading) {
     return {
       attemptToRegister: function (newUser) {
         return $http({
@@ -54,6 +54,42 @@ angular.module('app.services', ['ngResource'])
           },
           data: newUser
         })
+      },
+      login: function (user) {
+        Loading.show();
+
+        this.attemptLogin(user).then(function (value) {
+
+          if (value.status == 200) {
+
+            var token = value.data['access_token'];
+            Token.setProperty(token);
+
+            ProfileManager.loadProfile(Token.getProperty()).then(function (response) {
+
+              if (response.data.isStudent) {
+              } else {
+                PopUpManager.alert("You need a student account to login");
+              }
+            });
+          }
+        }, function (error) {
+          PopUpManager.alert(error.statusText);
+          console.log(error);
+        }).finally(function(){
+          Loading.hide();
+        });
+      },
+
+      attemptLogin: function (user) {
+        return $http({
+          method: 'POST',
+          url: url + '/Token',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: $httpParamSerializerJQLike(user)
+        });
       }
     }
   })
